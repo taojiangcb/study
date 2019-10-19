@@ -1,3 +1,6 @@
-export const ACTION = {
-    CHANGE_FOCUS:'changeFocus'
+export function getAction(type,value) {
+    return {
+        type:type,
+        value:value
+    }
 }

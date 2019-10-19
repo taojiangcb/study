@@ -10,7 +10,7 @@ export const HeaderWrapper = styled.div`
 	box-shadow:0px 1px 2px rgb(0,0,0,0.1);
 `;
 
-export const Logo = styled.a.attrs({href:"/"})`
+export const Logo = styled.a.attrs({ href: "/" })`
 	background: url(${logoPic}) no-repeat;
 	background-size: contain;
 	flex:0 0 100px;
@@ -108,7 +108,7 @@ export const SearchWapper = styled.div`
 `;
 
 export const NavSearch = styled.input.attrs(
-	{placeholder: '搜索'}
+	{ placeholder: '搜索' }
 )`
   	width: 160px;
 	height: 38px;

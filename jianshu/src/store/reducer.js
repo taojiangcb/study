@@ -1,14 +1,11 @@
-import { ACTION } from "./action";
 
-const defaultState = {
-    inpFocues: false,
-}
+import { combineReducers } from 'redux-immutable';
 
-export default (state = defaultState, action) => {
-    if (action.type === ACTION.CHANGE_FOCUS) {
-        let newStates = JSON.parse(JSON.stringify(state));
-        newStates.inpFocues = action.value;
-        return newStates;
-    }
-    return state;
-};
+import {reducer as headerReducer} from '../common/header/store'
+
+/**整合拆分的reducer */
+const reducer = combineReducers({
+        header: headerReducer
+})
+
+export default reducer;
