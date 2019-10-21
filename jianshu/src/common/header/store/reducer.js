@@ -1,12 +1,8 @@
 import { fromJS } from 'immutable';
-
-
 import { ACTION } from "./actionConst";
 
 
-const defaultState = fromJS({
-    inpFocues: false,
-})
+const defaultState = fromJS({ inpFocues: false })
 
 export default (state = defaultState, action) => {
     console.log(JSON.stringify(action));

@@ -1,68 +1,240 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 项目练习知识点
 
-## Available Scripts
 
-In the project directory, you can run:
+### styled-components 
+css in js 使用js 的方式定义css组件
+```
+export const HomeWapper = styled.div`
+  width:960px;
+  margin:0px;
+  height:300px;
+  background:red;
+`
 
-### `yarn start`
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### react-transition-group
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### redux && react-redux 的使用 
 
-### `yarn test`
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+redux 结构
+  - action (消息传递作用，数据行为穿透)
+  - reducer（业务逻辑数据处理）
+  - store （redux 入口）
+  - 开发插件 & 工具
+    - redux-devtool (数据调试检查工具)
+    - react-redux (react版本的 redux)
+    - redux-thunk (dispatch 异步拆分业务逻辑)
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+store 数据域的使用捆绑
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+reducer.js 定义数据域&业务拆分
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+import { combineReducers } from 'redux-immutable';
 
-### `yarn eject`
+import {reducer as headerReducer} from '../common/header/store';
+import homeReducer from '../pages/home/store/reducer';
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+/**整合拆分的reducer */
+const reducer = combineReducers({
+    header: headerReducer,
+    home:homeReducer
+})
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export default reducer;
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+store.js 数据捆绑
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+import { createStore, applyMiddleware, compose } from 'redux';
+import reducer from './reducer';
+import thunk from 'redux-thunk';
 
-## Learn More
+//是否启用调试工具
+const composeEnhancers = 
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+//使用中间件
+const store = createStore(reducer, composeEnhancers(
+	applyMiddleware(thunk)
+));
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+export default store;
+import store from './store';
 
-### Code Splitting
+=====================================
+import {connect} from 'react-redux';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+connect 的使用&作用
+  - 绑定组件
+  - 组件的state 绑定 props
+  - 组件的业务方法 绑定 props
 
-### Analyzing the Bundle Size
+//页面装在完成，触发
+componentDidMount() {
+    this.props.changeHomeData();
+  }
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+//将组件的 state 绑定到 props
+const mapStateToProps = (state) => {
+  return {
+    state
+  }
+}
 
-### Making a Progressive Web App
+//绑定组件的业务逻辑方法 在组件的props 中调用
+const mapDispatchToProps = (dispatch)=> ({
+  changeHomeData() {
+    let action = getHomeInfo();
+    dispatch(action);
+  }
+})
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
-### Advanced Configuration
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
 
-### Deployment
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+### combineReducers 整合拆分的reducer 
+```
 
-### `yarn build` fails to minify
+import { combineReducers } from 'redux-immutable';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+import {reducer as headerReducer} from '../common/header/store';
+import homeReducer from '../pages/home/store/reducer';
+
+/**整合拆分的reducer */
+const reducer = combineReducers({
+    header: headerReducer,
+    home:homeReducer
+})
+
+export default reducer;
+```
+
+### immutable 的使用
+
+immutable 的作用和目的是在消息数据穿透的过程中数据被意外修改，起码起码数据不能通过运算符进行串改，数据一致性，安全性得到一定的保证。
+
+```
+const defaultState = fromJS({
+    inpFocues: false,
+})
+
+export default (state = defaultState, action) => {
+    console.log(JSON.stringify(action));
+    if (action.type === ACTION.CHANGE_FOCUS) {
+        return state.set('inpFocues',action.value);
+    }
+    return state;
+}; 
+
+export default (state = defaultState, action) => {
+  console.log(JSON.stringify(action));
+  if (action.type === ACTION.GET_HOME_DATA) {
+      return state.merge({
+        recommendList:fromJS(action.recommendList),
+        articleList:fromJS(action.articleList),
+        authorList:fromJS(action.authorList),
+      })
+      // state.set('articleList',action.articleList);
+      // state.set('recommendList',action.recommendList);
+  }
+  return state;
+}; 
+```
+
+### react-router-dom 的使用
+```
+- BrowserRouter Router
+
+- Router
+    - path:'/'
+    - render = {()=><div>home</div>}
+    - exact 完全匹配
+
+import { BrowserRouter, Route } from 'react-router-dom';
+import { Home } from './pages/home';
+import { Detail } from './pages/detail';
+
+
+function App() {
+  return (
+    <Provider store={store}>
+      <BrowserRouter>
+        <div>
+          <Heander></Heander>
+          <Route path='/' exact component={Home}></Route>
+          <Route path='/detail' exact component={Detail}></Route>
+        </div>
+      </BrowserRouter>
+    </Provider>
+  );
+}
+
+export default App;
+
+
+```
+
+```
+
+
+### 活用css3
+- 父子选择器
+    - 父子间接选择器
+    - 父子直接选择器
+- 伪元素选择器
+    - first-child
+    - last-child
+    - 属性选择器
+  
+### flex 布局
+- content 包裹元素
+  - flex-direction
+    - flex-direction: row | row-reverse | column | column-reverse;
+  - flex-wrap
+    -   flex-wrap: nowrap | wrap | wrap-reverse;
+  - flex-flow flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap。
+    -   flex-flow: <flex-direction> <flex-wrap>;
+  - justify-content justify-content属性定义了项目在主轴上的对齐方式。
+    -   justify-content: flex-start | flex-end | center | space-between | space-around;
+  - align-items align-items属性定义项目在交叉轴上如何对齐。(垂直对齐))
+    - align-items: flex-start | flex-end | center | baseline | stretch;
+  - align-content
+    - align-content: flex-start | flex-end | center | space-between | space-around | stretch;
+
+- item 子级元素
+    - order
+      -   order: <integer>; order属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
+    - flex-grow
+      -   flex-grow: <number>; /* default 0 */ flex-grow属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
+    - flex-shrink
+      -   flex-shrink: <number>; /* default 1 */ flex-shrink属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+    - flex-basis
+      -   flex-basis: <length> | auto; /* default auto */ 它可以设为跟width或height属性一样的值（比如350px），则项目将占据固定空间。
+    - flex 以上三个元素的合并
+      -   flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
+    - align-self 自身覆盖 conent 元素的item-align 的属性可以以其他元素达到不一样的对齐方式
+      -   align-self: auto | flex-start | flex-end | center | baseline | stretch;
+
+
+  ```
+  ### webpack 开发模式 自己模拟接口  express.Router()
+  ```
+  const apiRouters = express.Router();
+  apiRouters.get('/home',(req,res,next)=>{
+  console.log('api/home.....');
+  let data = require('../src/api/home.js');
+  res.send(data.data);
+})
+
+module.exports = function(proxy, allowedHost) {
+  +
+   app.use('/api',apiRouters);
+  +
+})
+  ```

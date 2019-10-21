@@ -67,8 +67,6 @@ class Heander extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
-    console.log(state['header']);
     return { 
         inpFocues: state.getIn(['header', 'inpFocues']),
     }
