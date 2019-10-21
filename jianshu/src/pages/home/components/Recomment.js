@@ -13,7 +13,7 @@ class Recomment extends Component {
     return (
       <RecommentWrapper>
         {
-          list.map(item => {
+          list&&list.map(item => {
             return (
               <RecommentItem key={item.get('id')}>
                 <img src={item.get('imgUrl')} height="100%" alt="" />
@@ -33,7 +33,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-
 }
 
 export default connect(mapStateToProps, null)(Recomment)

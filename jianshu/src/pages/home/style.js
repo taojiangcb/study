@@ -228,3 +228,21 @@ export const WriteHeade = styled.div`
     content:'';
   }
 `;
+
+export const AddMore = styled.a.attrs({
+  // href:'/'
+})`
+  display:block;
+  border-radius:30px;
+  color:#696969;
+  width:100%;
+  height:40px;
+  text-align:center;
+  line-height:40px;
+  background-color:#CCCCCC;
+  margin-top:10px;
+  text-decoration:none;
+  :hover {
+    text-decoration:none;
+  }
+`;

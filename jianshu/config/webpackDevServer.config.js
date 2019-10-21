@@ -18,6 +18,17 @@ apiRouters.get('/home',(req,res,next)=>{
   res.send(data.data);
 })
 
+apiRouters.get('/addHome',(req,res,next)=>{
+  console.log('api/addHome...')
+  let data = require('../src/api/addHome');
+  console.log(req.query)
+  let {page} = req.query;
+  data.data.data.map(item=>{
+    item.id *= parseInt(page);
+  })
+  res.send(data.data);
+})
+
 module.exports = function(proxy, allowedHost) {
   return {
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote

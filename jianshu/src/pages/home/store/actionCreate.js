@@ -17,4 +17,18 @@ export const getHomeInfo = () => {
         dispatch(action);
       })
   }
-} 
+}
+
+export const getAddHome = (nextPage) => {
+  return (dispatch) => {
+    axios.get(`/api/addHome?page=${nextPage}`)
+      .then((res) => {
+        let action = {
+          type: ACTION.GET_ADD_HOME,
+          articleList: res.data.data,
+          articlePage: nextPage
+        }
+        dispatch(action);
+      })
+  }
+}
