@@ -4,6 +4,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAction } from "../../store/action";
 import { ACTION } from "./store/actionConst";
+import { loginOut } from '../../pages/login/store/actionCreators';
+import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
+
 
 // const Heander = (props) => {
 //     console.log('....' + JSON.stringify(props));
@@ -39,7 +43,7 @@ class Heander extends Component {
     super(props);
   }
   render() {
-    console.log('...' + JSON.stringify(this.props));
+    let { inpFocues, isLogin, router } = this.props;
     return (
       <HeaderWrapper>
         <Logo></Logo>
@@ -54,7 +58,7 @@ class Heander extends Component {
             </NavSearch>
             <a className="icon" href="/"><i className="iconfont iconsousuo"></i></a>
           </SearchWapper>
-          <NavItem className="right"> 登录 </NavItem>
+          <NavItem className="right" onClick={(e) => { this.props.onLoginBtnClick(isLogin, this.props) }}> {isLogin ? '退出' : '登录'} </NavItem>
           <NavItem className="right"> <i className="iconfont ddd iconAa"></i> </NavItem>
         </Nav>
         <Addtion>
@@ -69,6 +73,7 @@ class Heander extends Component {
 const mapStateToProps = (state) => {
   return {
     inpFocues: state.getIn(['header', 'inpFocues']),
+    isLogin: state.getIn(['login', 'login'])
   }
 }
 
@@ -79,8 +84,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     onInputOutFoucsHandler: function () {
       dispatch(getAction(ACTION.CHANGE_FOCUS, false));
+    },
+    onLoginBtnClick(status, props) {
+      console.log(props);
+      status ? dispatch(loginOut()) : props.history.push('/login');
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Heander);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Heander));

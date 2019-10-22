@@ -246,3 +246,16 @@ export const AddMore = styled.a.attrs({
     text-decoration:none;
   }
 `;
+
+export const ToTop = styled.div`
+  position:fixed;
+  width:60px;
+  height:60px;
+  right:calc(50% - 400px);
+  bottom:10px;
+  border:1px solid #CCCCCC;
+  background-color:#EFEFEF;
+  line-height:60px;
+  text-align:center;
+  user-select:none
+`;

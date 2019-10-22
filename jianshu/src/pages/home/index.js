@@ -1,12 +1,12 @@
 import React, { PureComponent, Component } from 'react'
 import PropTypes from 'prop-types'
-import { HomeWapper, HomeLeft, HomeRight, TopicWrapper, CodePicture } from './style'
+import { HomeWapper, HomeLeft, HomeRight, TopicWrapper, CodePicture, ToTop } from './style'
 import { Topic } from './components/Topic'
 import Recomment from './components/Recomment'
 import Write from './components/Writer'
 import List from './components/List'
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { ACTION } from './store/actionConst'
 import { getHomeInfo } from './store/actionCreate'
 
@@ -38,6 +38,7 @@ class Home extends Component {
             <Write></Write>
           </HomeRight>
         </HomeWapper>
+        <ToTop onClick={(e) => { window.scrollTo(0, 0) }}>^</ToTop>
       </div>
     )
   }
@@ -53,7 +54,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch)=> ({
+const mapDispatchToProps = (dispatch) => ({
   changeHomeData() {
     let action = getHomeInfo();
     dispatch(action);

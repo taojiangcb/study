@@ -93,9 +93,6 @@ const mapDispatchToProps = (dispatch)=> ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
-
-
-
 ```
 
 ### combineReducers 整合拆分的reducer 
@@ -237,3 +234,83 @@ module.exports = function(proxy, allowedHost) {
   +
 })
   ```
+
+  ### withRouter 的使用
+  withRouter 是一个高阶组件，把 match，location，history 三个对象注入到组件的 props 中。这是一个非常实用的函数
+
+```
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux';
+
+class Heander extends Component {
+  reunder(){...}
+  const mapStateToProps = (state) => {
+  return {
+    inpFocues: state.getIn(['header', 'inpFocues']),
+    isLogin: state.getIn(['login', 'login'])
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onInputFocusHandler: function () {
+      dispatch(getAction(ACTION.CHANGE_FOCUS, true));
+    },
+    onInputOutFoucsHandler: function () {
+      dispatch(getAction(ACTION.CHANGE_FOCUS, false));
+    },
+    onLoginBtnClick(status, props) {
+      console.log(props);
+      //这里可以通过 props.history.push('')控制路由的跳转
+      status ? dispatch(loginOut()) : props.history.push('/login');
+    }
+  }
+}
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Heander));
+```
+
+### react-loadable 组件的使用
+现在使用 react-loadable 来实现组件的异步加载，一切变得容易多了。在之前的 React Router 文档中是按照下面这种方式实现组件的异步加载的。
+
+把相关的界面拆分出去，没必要都打包进主'miain.js' 文件
+
+比如把 login 模块分离出去，进入主页的时候不需要加载 login 模块的代码
+
+loadable.js 文件
+```
+import React from 'react'
+import Loadable from 'react-loadable';
+
+const LoadableComponent = Loadable({
+    //指定加载的模块
+    loader: () => import('./index') //login 组件,
+    //加载时候显示的dom原生
+    loading() {
+        return <span>loading....</span>;
+    }
+})
+
+//异步加载 login 界面
+export default () => <LoadableComponent />
+```
+
+App.js
+```
+import Login from './pages/login/loadable';
+
+function App() {
+  return (
+    <Provider store={store}>
+      <BrowserRouter>
+        <div>
+          <Route path='/login' exact component={Login}></Route>
+        </div>
+      </BrowserRouter>
+    </Provider>
+  );
+}
+
+
+```

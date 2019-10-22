@@ -12,24 +12,30 @@ const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
 
 const apiRouters = express.Router();
-apiRouters.get('/home',(req,res,next)=>{
+apiRouters.get('/home', (req, res, next) => {
   console.log('api/home.....');
   let data = require('../src/api/home.js');
   res.send(data.data);
 })
 
-apiRouters.get('/addHome',(req,res,next)=>{
+apiRouters.get('/addHome', (req, res, next) => {
   console.log('api/addHome...')
   let data = require('../src/api/addHome');
   console.log(req.query)
-  let {page} = req.query;
-  data.data.data.map(item=>{
+  let { page } = req.query;
+  data.data.data.map(item => {
     item.id *= parseInt(page);
   })
   res.send(data.data);
 })
 
-module.exports = function(proxy, allowedHost) {
+apiRouters.post('/login', (req, res, next) => {
+  console.log(`./login ... ${JSON.stringify(req.query)}`);
+  let { user, pwd } = req.query;
+  res.send({ success: true, data: true, code: 0 });
+})
+
+module.exports = function (proxy, allowedHost) {
   return {
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
@@ -120,7 +126,7 @@ module.exports = function(proxy, allowedHost) {
       // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
       app.use(noopServiceWorkerMiddleware());
 
-      app.use('/api',apiRouters);
+      app.use('/api', apiRouters);
 
     },
   };
