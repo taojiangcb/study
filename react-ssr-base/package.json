@@ -11,7 +11,7 @@
     "start": "node ./dist/bundle-ssr.js",
     "dev": "npm-run-all --parallel dev:**",
     "dev:ssr:start": "nodemon --watch dist --exec node ./dist/bundle-ssr.js",
-    "dev:api:dev": "nodemon --watch dist --exec babel-node ./config/api-dev-server.mjs",
+    "dev:api:dev": "nodemon --watch config --exec babel-node ./config/api-dev-server.mjs",
     "dev:build:server": "webpack --mode development --config ./config/webpack.server.ssr.js --watch",
     "dev:build:client": "webpack --mode development --config ./config/webpack.client.ssr.js --watch"
   },
@@ -28,7 +28,9 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "clean-webpack-plugin": "^3.0.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-cors": "^v0.0.3",
     "html-webpack-plugin": "^3.2.0",
     "immutable": "^4.0.0-rc.12",
     "nodemon": "^1.19.4",

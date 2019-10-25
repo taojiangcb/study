@@ -98,6 +98,18 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 
 /***/ }),
 
+/***/ "./src/api/API.js":
+/*!************************!*\
+  !*** ./src/api/API.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nvar API_HOST = \"http://localhost:3010\";\n\nvar API = exports.API = {\n  GET_HOME_LIST: '/api/get_home_list'\n};\n\nvar getApi = exports.getApi = function getApi(api) {\n  var host = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : API_HOST;\n\n  return host + api;\n};\n\n//# sourceURL=webpack:///./src/api/API.js?");
+
+/***/ }),
+
 /***/ "./src/components/head/Header.jsx":
 /*!****************************************!*\
   !*** ./src/components/head/Header.jsx ***!
@@ -118,7 +130,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"react\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactRedux = __webpack_require__(/*! react-redux */ \"react-redux\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar Home = function (_React$Component) {\n  _inherits(Home, _React$Component);\n\n  function Home(props) {\n    _classCallCheck(this, Home);\n\n    return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));\n  }\n\n  _createClass(Home, [{\n    key: 'render',\n    value: function render() {\n      var name = this.props.name;\n\n      return _react2.default.createElement(\n        'div',\n        null,\n        _react2.default.createElement(\n          'h1',\n          null,\n          name\n        ),\n        _react2.default.createElement(\n          'div',\n          null,\n          ' \\u540C\\u6784\\u670D\\u52A1\\u5668\\u8DEF\\u7531 '\n        ),\n        _react2.default.createElement(\n          'button',\n          { onClick: function onClick(e) {\n              alert('再来一下');\n            } },\n          ' \\u70B9\\u51FB\\u4E00\\u4E0B '\n        )\n      );\n    }\n  }]);\n\n  return Home;\n}(_react2.default.Component);\n\nvar mapStateToProps = function mapStateToProps(state) {\n  return {\n    name: state.getIn(['Home', \"name\"])\n  };\n};\n\nvar mapDispatchToProps = function mapDispatchToProps(dispatch) {};\n\nexports.default = (0, _reactRedux.connect)(mapStateToProps, null)(Home);\n\n//# sourceURL=webpack:///./src/containers/home/Home.jsx?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"react\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactRedux = __webpack_require__(/*! react-redux */ \"react-redux\");\n\nvar _Action = __webpack_require__(/*! ../../store/Action.Home */ \"./src/store/Action.Home.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar Home = function (_React$Component) {\n  _inherits(Home, _React$Component);\n\n  function Home(props) {\n    _classCallCheck(this, Home);\n\n    return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));\n  }\n\n  _createClass(Home, [{\n    key: 'render',\n    value: function render() {\n      var _this2 = this;\n\n      var name = this.props.name;\n\n      return _react2.default.createElement(\n        'div',\n        null,\n        _react2.default.createElement(\n          'h1',\n          null,\n          name\n        ),\n        _react2.default.createElement(\n          'div',\n          null,\n          ' \\u540C\\u6784\\u670D\\u52A1\\u5668\\u8DEF\\u7531 '\n        ),\n        _react2.default.createElement(\n          'button',\n          { onClick: function onClick(e) {\n              _this2.props.getHomeList();\n            } },\n          ' \\u70B9\\u51FB\\u4E00\\u4E0B '\n        )\n      );\n    }\n  }]);\n\n  return Home;\n}(_react2.default.Component);\n\nvar mapStateToProps = function mapStateToProps(state) {\n  return {\n    name: state.getIn(['Home', \"name\"])\n  };\n};\n\nvar mapDispatchToProps = function mapDispatchToProps(dispatch) {\n  return {\n    getHomeList: function getHomeList() {\n      dispatch(_Action.HomeAction.get_home_list());\n    }\n  };\n};\n\nexports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Home);\n\n//# sourceURL=webpack:///./src/containers/home/Home.jsx?");
 
 /***/ }),
 
@@ -158,6 +170,30 @@ eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar
 
 /***/ }),
 
+/***/ "./src/store/Action.Home.js":
+/*!**********************************!*\
+  !*** ./src/store/Action.Home.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.HomeAction = undefined;\n\nvar _axios = __webpack_require__(/*! axios */ \"axios\");\n\nvar _axios2 = _interopRequireDefault(_axios);\n\nvar _API = __webpack_require__(/*! ../api/API */ \"./src/api/API.js\");\n\nvar _ActionConst = __webpack_require__(/*! ./ActionConst */ \"./src/store/ActionConst.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar action_struct = {\n  type: \"\"\n};\n\nvar createAction = function createAction(type) {\n  if (!type) return null;\n  var action = Object.assign(action_struct, { type: type });\n  switch (type) {\n    case _ActionConst.ACTION_HOME.GET_HOME_LIST:\n  }\n  return action;\n};\n\nvar HomeAction = exports.HomeAction = {\n  createAction: createAction,\n  get_home_list: function get_home_list() {\n    return function (dispatch) {\n      _axios2.default.get((0, _API.getApi)(_API.API.GET_HOME_LIST)).then(function (res) {\n        console.log('receive ... ' + res);\n        var action = createAction(_ActionConst.ACTION_HOME.GET_HOME_LIST);\n        dispatch(action);\n      });\n    };\n  }\n};\n\n//# sourceURL=webpack:///./src/store/Action.Home.js?");
+
+/***/ }),
+
+/***/ "./src/store/ActionConst.js":
+/*!**********************************!*\
+  !*** ./src/store/ActionConst.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nvar ACTION_HOME = exports.ACTION_HOME = {\n  GET_HOME_LIST: \"__getHomeList__\"\n};\n\n//# sourceURL=webpack:///./src/store/ActionConst.js?");
+
+/***/ }),
+
 /***/ "./src/store/Reducer.Home.js":
 /*!***********************************!*\
   !*** ./src/store/Reducer.Home.js ***!
@@ -191,6 +227,17 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 
 "use strict";
 eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nexports.ssrStore = exports.store = undefined;\n\nvar _redux = __webpack_require__(/*! redux */ \"redux\");\n\nvar _Reducer = __webpack_require__(/*! ./Reducer */ \"./src/store/Reducer.js\");\n\nvar _Reducer2 = _interopRequireDefault(_Reducer);\n\nvar _reduxThunk = __webpack_require__(/*! redux-thunk */ \"redux-thunk\");\n\nvar _reduxThunk2 = _interopRequireDefault(_reduxThunk);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar window = window || {};\n\n// 是否启用调试工具\nvar composeEnhancers = window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || _redux.compose;\n\n// 使用中间件\nvar store = exports.store = (0, _redux.createStore)(_Reducer2.default, composeEnhancers((0, _redux.applyMiddleware)(_reduxThunk2.default)));\n\nvar ssrStore = exports.ssrStore = function ssrStore() {\n    return (0, _redux.createStore)(_Reducer2.default, composeEnhancers((0, _redux.applyMiddleware)(_reduxThunk2.default)));\n};\n\n//# sourceURL=webpack:///./src/store/Store.js?");
+
+/***/ }),
+
+/***/ "axios":
+/*!************************!*\
+  !*** external "axios" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"axios\");\n\n//# sourceURL=webpack:///external_%22axios%22?");
 
 /***/ }),
 
