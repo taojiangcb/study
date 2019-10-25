@@ -1,7 +1,16 @@
 
 import React from 'react';
-import Home from '../containers/home/Home.jsx';
+import ReactDom from 'react-dom';
 
-import {hydrate} from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import Routers from "../Routers"
 
-hydrate(<Home/>,document.getElementById("root"));
+const App = () => {
+  return (
+    <BrowserRouter>
+      {Routers}
+    </BrowserRouter>
+  )
+}
+
+ReactDom.hydrate(<App />, document.getElementById("root"));

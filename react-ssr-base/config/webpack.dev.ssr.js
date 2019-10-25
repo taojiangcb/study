@@ -1,20 +1,18 @@
-
 var merge = require('webpack-merge');
-
 const Paths = require('./Paths');
 const path = require('path');
+const baseconfig = require('./webpack.base.js');
 const nodeExternals = require('webpack-node-externals');
 
-let baseConfig = require('./webpack.base');
 
-let ssr_server = merge(baseConfig, {
+let devssr = merge(baseconfig, {
   target: 'node',
-  entry: path.resolve(__dirname, '../src/ssr/index.js'),
+  entry: path.resolve(__dirname, '../src/ssr/render.js'),
   output: {
-    filename: "bundle-ssr.js",
+    filename: "bundle-ssr-render.js",
     path: Paths.SSR_BUILD,
   },
   externals: [nodeExternals()]
 })
 
-module.exports = ssr_server;
+module.exports = devssr;

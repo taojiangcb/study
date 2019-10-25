@@ -1,13 +1,16 @@
 
 import React from 'react';
+export class Home extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-const Home = () => {
-  return (
-    <div>
-      <div> this is ssr11 dds f </div>
-      <button onClick={(e)=>{alert('1230111111116')}}>123</button>
-    </div>
+  render() {
+    return (
+      <div>
+        <div> 同构服务器路由 </div>
+        <button onClick={(e) => { alert('再来一下'); }}> 点击一下 </button>
+      </div>
     )
+  }
 }
-
-export default Home;

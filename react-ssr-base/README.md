@@ -29,3 +29,91 @@
 7. js大妈根据地址返回不同的路由内容
 
 ### 服务器路由 staticRouter
+
+### 同构路由
+1.建立Router文件
+```
+import React from 'react';
+
+import { Route } from 'react-router-dom';
+import { Home } from './containers/home/Home.jsx';
+
+export default (
+    <div>
+      <Route path="/" component={Home} />
+    </div>
+)
+```
+
+2.app.js 客户端路由
+```
+
+import React from 'react';
+import ReactDom from 'react-dom';
+
+import { BrowserRouter } from 'react-router-dom';
+import Routers from "../Routers"
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      {Routers}
+    </BrowserRouter>
+  )
+}
+
+ReactDom.hydrate(<App />, document.getElementById("root"));
+```
+
+3.ssr/*.js 服务器端路由
+```
+1.render.js
+
+import React from 'react';
+
+import { StaticRouter } from 'react-router-dom';
+import Routers from '../Routers';
+import { renderToString } from 'react-dom/server';
+import { Home } from '../containers/home/Home.jsx';
+
+let template = `
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"><!--content--></div>
+  <script src="index.js"></script>
+</body>
+</html>
+`;
+
+export const render = (req) => {
+  console.log('11111');
+  let content = renderToString(
+    <StaticRouter location={req.path} content={{}}>
+      {Routers}
+    </StaticRouter>
+  );
+  let html = template.replace('<!--content-->', content);
+  console.log(html);
+  return html;
+}
+
+2.index.js
+import express from 'express';
+import { render } from './render';
+
+var app = express();
+app.use(express.static('public'));
+
+app.get('*', (req, res) => {
+  let html = render(req);
+  res.send(html);
+})
+
+app.listen(3000, () => { console.log('ssr server start....'); })
+
+```
+
