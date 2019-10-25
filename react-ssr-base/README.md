@@ -30,22 +30,37 @@
 
 ### 服务器路由 staticRouter
 
-### 同构路由
+### SSR 同构路由 
+
+1. 服务器端要使用 StaticRouter 对象为路由根级
+2. 客户端路由为BrowserRouter 为根级别
+3. 路由节点可以单独抽出来 Route为路由节点
+
+Router.js 为共享的路由节点
+App.js 存放客户端路由
+Redner.js 存放服务端路由
+  - StateRouter 
+    - localtion 必须配置 这里指向 req.path 客户传上来的路径
+    - content = {{}} 必须配置
+
 1.建立Router文件
 ```
 import React from 'react';
 
 import { Route } from 'react-router-dom';
 import { Home } from './containers/home/Home.jsx';
+import { Login } from './containers/login/Login.jsx';
+
 
 export default (
-    <div>
-      <Route path="/" component={Home} />
-    </div>
+  <div>
+    <Route path="/" exact component={Home} />
+    <Route path="/login" exact component={Login} />
+  </div>
 )
 ```
 
-2.app.js 客户端路由
+2.app.js 建立客户端路由
 ```
 
 import React from 'react';
@@ -65,7 +80,7 @@ const App = () => {
 ReactDom.hydrate(<App />, document.getElementById("root"));
 ```
 
-3.ssr/*.js 服务器端路由
+3.ssr/*.js 建立服务端路由
 ```
 1.render.js
 
@@ -117,3 +132,27 @@ app.listen(3000, () => { console.log('ssr server start....'); })
 
 ```
 
+### 同构是时候引用 Redux 
+```
+1.redux的目录结构
+  /root
+    ./store
+       ./Store.js         数据的跟节点
+       ./Reducer.js       每个模块的数据 & 数据穿透的业务逻辑处理
+       ./ActionConst.js   消息穿透的名称常量
+
+1.Store.js 负责构建整理的 redux 模块
+    1.中间件的使用  redux-thunk
+    2.调试工具的 redux-tool 的配置
+    3.构建全局的 reducer 
+
+2.Reducer.js
+  1.将各个模块的 数据业务进行整合 
+  2.数据模块的业务的更新操作
+
+各个模块目录下面分别
+  ./store
+    ./Reducer.module.js   对应模块的 Reducer 业务更新处理
+    ./Action.module.js    对应模块的 Reducer 的action 穿透处理
+
+```

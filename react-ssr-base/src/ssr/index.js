@@ -1,5 +1,5 @@
 import express from 'express';
-import { render } from './render';
+import { render } from './Render';
 
 var app = express();
 app.use(express.static('public'));

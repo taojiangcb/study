@@ -1,16 +1,21 @@
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import {hydrate,render} from 'react-dom';
 
 import { BrowserRouter } from 'react-router-dom';
-import Routers from "../Routers"
+import  Routers  from "../Routers"
 
-const App = () => {
-  return (
+import { ssrStore } from '../store/Store';
+import { Provider } from 'react-redux'
+import { Header } from '../components/head/Header.jsx';
+
+const App = () => (
+  <Provider store={ssrStore()}>
     <BrowserRouter>
+      <Header></Header>
       {Routers}
     </BrowserRouter>
-  )
-}
+  </Provider>
+)
 
-ReactDom.hydrate(<App />, document.getElementById("root"));
+render(<App />, document.getElementById("root"));

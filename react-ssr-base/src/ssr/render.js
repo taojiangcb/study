@@ -4,7 +4,10 @@ import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import Routers from '../Routers';
 import { renderToString } from 'react-dom/server';
-import { Home } from '../containers/home/Home.jsx';
+
+import { ssrStore } from '../store/Store';
+import { Provider } from 'react-redux'
+import { Header } from '../components/head/Header.jsx';
 
 let template = `
 <html lang="en">
@@ -20,11 +23,14 @@ let template = `
 `;
 
 export const render = (req) => {
-  console.log('11111');
+
   let content = renderToString(
-    <StaticRouter location={req.path} content={{}}>
-      {Routers}
-    </StaticRouter>
+    <Provider store={ssrStore()}>
+      <StaticRouter location={req.path} content={{}}>
+        <Header></Header>
+        {Routers}
+      </StaticRouter>
+    </Provider>
   );
   let html = template.replace('<!--content-->', content);
   console.log(html);
