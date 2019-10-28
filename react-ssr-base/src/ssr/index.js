@@ -8,12 +8,10 @@ var app = express();
 app.use(express.static('public'));
 
 app.get('*', (req, res) => {
-
   //获取一个 sotre() 的实例
   let store = ssrStore();
   //匹配当前的路由 
   let matchedRouters = matchRoutes(Routers, req.path);
-
   //get到相关的promiese
   let promisess = [];
   matchedRouters.map(item => {

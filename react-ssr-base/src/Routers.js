@@ -4,9 +4,9 @@ import { Login } from './containers/login/Login.jsx';
 
 export const Routers = [
   {
-    path: '/home',
-    exact: true,
+    path: '/',
     component: Home,
+    exact:true,
     loadData: loadHomeData,
     key: "home"
   },

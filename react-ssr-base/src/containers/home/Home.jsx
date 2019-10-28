@@ -2,11 +2,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { HomeAction } from '../../store/Action.Home';
-
 class Home extends React.Component {
-
   constructor(props) { super(props); }
-
   render() {
     let { name, newsList } = this.props;
     return (
@@ -14,11 +11,10 @@ class Home extends React.Component {
         <h1>{name}</h1>
         <div> 同构服务器路由 </div>
         {
-          newsList && newsList.map(item=>{
+          newsList && newsList.map(item => {
             return <p key={item.id}>{item.title}</p>
           })
         }
-
         <button onClick={(e) => { this.props.getHomeList() }}> 点击一下 </button>
       </div>
     )
@@ -27,7 +23,7 @@ class Home extends React.Component {
   /**客户端初始化的时候发起的数据初始化请求 */
   componentDidMount() {
     let { newsList } = this.props;
-    if (!newsList || newsList.length === 0) {
+    if (!newsList.length) {
       this.props.getHomeList();
     }
   }
@@ -39,7 +35,6 @@ export const loadHomeData = (store) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     name: state.Home.name,
     newsList: state.Home.newsList,

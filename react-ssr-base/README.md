@@ -171,8 +171,7 @@ app.listen(3000, () => { console.log('ssr server start....'); })
 ```
 5.在页面初始化reducer的时候进行脱水操作
 ```
-  /sotre/Store.js
-  
+/sotre/Store.js
 ```
 
 1.修改Routers.js

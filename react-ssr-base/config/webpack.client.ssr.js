@@ -15,10 +15,10 @@ let ssr_client = merge(baseConfig, {
     path: Paths.SSR_CLIENT,
   },
   plugins:[
-    new HtmlPlign({
-      template:path.resolve(__dirname,'../template/index.html'),
-      title:"app title"
-    })
+    // new HtmlPlign({
+    //   template:path.resolve(__dirname,'../template/index.html'),
+    //   title:"app title"
+    // })
   ]
 })
 
