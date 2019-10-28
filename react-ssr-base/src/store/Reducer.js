@@ -1,5 +1,4 @@
-import { combineReducers } from 'redux-immutable';
-
+import { combineReducers } from 'redux';
 import HomeReducer from './Reducer.Home.js';
 
 const reducer = combineReducers({

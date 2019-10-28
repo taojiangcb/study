@@ -3,20 +3,24 @@ import reducer from './Reducer';
 import thunk from 'redux-thunk';
 
 
-let window = window || {};
-
+// let window = window || {};
 // 是否启用调试工具
-const composeEnhancers =
-    window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-// 使用中间件
-export const store = createStore(reducer, composeEnhancers(
-    applyMiddleware(thunk)
-));
-
-export const ssrStore = () => ( 
-    createStore(reducer,composeEnhancers(
+//客户端获取的store
+export const clientStore = () => {
+    let defaultState = window.content;
+    console.log(defaultState);
+    let composeEnhancers = window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    return createStore(reducer,defaultState, composeEnhancers(
         applyMiddleware(thunk)
-    )) 
-)
+    ))
+};
+
+//服务端获取的store
+export const ssrStore = () => {
+    let composeEnhancers = compose;
+    return createStore(reducer, composeEnhancers(
+        applyMiddleware(thunk)
+    ))
+}
 

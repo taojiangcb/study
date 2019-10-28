@@ -2,9 +2,10 @@
 import React from 'react';
 
 import { StaticRouter } from 'react-router-dom';
-import Routers from '../Routers';
-import { renderToString } from 'react-dom/server';
+import { Route } from 'react-router'
+import { Routers } from '../Routers';
 
+import { renderToString } from 'react-dom/server';
 import { ssrStore } from '../store/Store';
 import { Provider } from 'react-redux'
 import { Header } from '../components/head/Header.jsx';
@@ -17,21 +18,28 @@ let template = `
 </head>
 <body>
   <div id="root"><!--content--></div>
+  <script>
+    window.content = $SOTRE;
+  </script>
   <script src="index.js"></script>
 </body>
 </html>
 `;
 
-export const render = (req) => {
+export const render = (store, req) => {
 
   let content = renderToString(
-    <Provider store={ssrStore()}>
+    <Provider store={store}>
       <StaticRouter location={req.path} content={{}}>
         <Header></Header>
-        {Routers}
+        {
+          Routers.map(route => { return <Route {...route} /> })
+        }
       </StaticRouter>
     </Provider>
   );
+  let storeData = JSON.stringify(store.getState());
+  template = template.replace('$SOTRE', storeData);
   let html = template.replace('<!--content-->', content);
   console.log(html);
   return html;

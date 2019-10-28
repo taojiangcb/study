@@ -156,3 +156,24 @@ app.listen(3000, () => { console.log('ssr server start....'); })
     ./Action.module.js    对应模块的 Reducer 的action 穿透处理
 
 ```
+
+### 服务器端渲染
+1.每个路由度需要一个dataLoad 指定数据路由初始化数据相关的入口
+2.将相关的数据扔给reducer，
+  1.reducer 会返回对应axios的promises
+  2.reducer 处理完成之后会填充对应的数据
+3.当所有的promises处理完成之后将store 丢给 render 渲染
+4.在服务端render的时候需要将数据接口都注水到 page的window 对象
+```
+  <script>
+    window.content = JSON.stringify(Data);
+  </script>
+```
+5.在页面初始化reducer的时候进行脱水操作
+```
+  /sotre/Store.js
+  
+```
+
+1.修改Routers.js
+
