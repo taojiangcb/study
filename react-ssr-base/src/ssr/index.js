@@ -14,11 +14,15 @@ app.get('*', (req, res) => {
   let matchedRouters = matchRoutes(Routers, req.path);
   //get到相关的promiese
   let promisess = [];
-  matchedRouters.map(item => {
+  matchedRouters.forEach(item => {
     if (item.route.loadData) {
+      console.log('......');
+      console.log(item);
       promisess.push(item.route.loadData(store));
     }
   });
+  console.log(promisess.length + '----------');
+  console.log(promisess);
 
   /** 相关的promiss 处理完成之后 开始渲染page */
   Promise.all(promisess)

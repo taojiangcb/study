@@ -24,7 +24,7 @@ class Home extends React.Component {
   componentDidMount() {
     let { newsList } = this.props;
     if (!newsList.length) {
-      this.props.getHomeList();
+      // this.props.getHomeList();
     }
   }
 }
@@ -35,6 +35,8 @@ export const loadHomeData = (store) => {
 }
 
 const mapStateToProps = (state) => {
+  console.log('....home state');
+  console.log(state);
   return {
     name: state.Home.name,
     newsList: state.Home.newsList,

@@ -28,7 +28,8 @@
 6. js代码拿到浏览器是的地址
 7. js大妈根据地址返回不同的路由内容
 
-### 服务器路由 staticRouter
+### 环境的搭建
+
 
 ### SSR 同构路由 
 
@@ -172,7 +173,136 @@ app.listen(3000, () => { console.log('ssr server start....'); })
 5.在页面初始化reducer的时候进行脱水操作
 ```
 /sotre/Store.js
+//客户端获取的store
+export const clientStore = () => {
+    let defaultState = window.content;
+    let composeEnhancers = window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    return createStore(reducer,defaultState, composeEnhancers(
+        applyMiddleware(thunk)
+    ))
+};
 ```
 
+修改要点:
 1.修改Routers.js
+```
+import Home, { loadHomeData } from './containers/home/Home.jsx';
+import { Login } from './containers/login/Login.jsx';
 
+export const Routers = [
+  {
+    path: '/',
+    component: Home,
+    exact:true,
+    loadData: loadHomeData,
+    key: "home"
+  },
+  {
+    path: "/login",
+    exact: true,
+    component: Login,
+    key: "login"
+  }
+]
+```
+
+2.修改客户端路由
+```
+const App = () => (
+  <Provider store={clientStore()}>
+    <BrowserRouter>
+      <Header></Header>
+      {
+        Routers.map(route=>{
+          return <Route {...route}/>
+        })
+      }
+    </BrowserRouter>
+  </Provider>
+)
+```
+
+3.修改ssr服务端路由
+```
+let content = renderToString(
+    <Provider store={store}>
+      <StaticRouter location={req.path} content={{}}>
+        <Header></Header>
+        {
+          Routers.map(route => { return <Route {...route} /> })
+        }
+      </StaticRouter>
+    </Provider>
+  );
+```
+
+4.修改store.js ssr服务的store和client的store拆分
+
+```
+//客户端获取的store
+export const clientStore = () => {
+    //客户的store 这个进行脱水处理，服务端在ssr渲染的时候已经把数据注水到页面中，为吧避免重刷所以这里把数据注入的reducer中
+    let defaultState = window.content;
+    let composeEnhancers = window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    return createStore(reducer,defaultState, composeEnhancers(
+        applyMiddleware(thunk)
+    ))
+};
+
+//服务端获取的store
+export const ssrStore = () => {
+    let composeEnhancers = compose;
+    return createStore(reducer, composeEnhancers(
+        applyMiddleware(thunk)
+    ))
+}
+```
+
+5.render.js 已经在上面提及过。在渲染index的时候，把数据注入到window.content中。
+ ```
+ let template = `
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"><!--content--></div>
+  <script>
+    //渲染的时候注入数据
+    window.content = $SOTRE;
+  </script>
+  <script src="index.js"></script>
+</body>
+</html>
+`;
+
+export const render = (store, req) => {
+
+  let content = renderToString(
+    <Provider store={store}>
+      <StaticRouter location={req.path} content={{}}>
+        <Header></Header>
+        {
+          Routers.map(route => { return <Route {...route} /> })
+        }
+      </StaticRouter>
+    </Provider>
+  );
+  let storeData = JSON.stringify(store.getState());
+  template = template.replace('$SOTRE', storeData);
+  let html = template.replace('<!--content-->', content);
+  console.log(html);
+  return html;
+ ```
+
+### axios 的instance 的使用
+
+1. 使用场景
+   1. 在请求时需要独特的配置 
+
+
+### 多级路由
+ renderRouters - react-router-config
+
+ 

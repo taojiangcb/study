@@ -4,6 +4,7 @@ import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { Route } from 'react-router'
 import { Routers } from '../Routers';
+import { renderRoutes } from 'react-router-config';
 
 import { renderToString } from 'react-dom/server';
 import { ssrStore } from '../store/Store';
@@ -27,14 +28,10 @@ let template = `
 `;
 
 export const render = (store, req) => {
-
   let content = renderToString(
     <Provider store={store}>
       <StaticRouter location={req.path} content={{}}>
-        <Header></Header>
-        {
-          Routers.map(route => { return <Route {...route} /> })
-        }
+        {renderRoutes(Routers)}
       </StaticRouter>
     </Provider>
   );

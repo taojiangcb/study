@@ -1,28 +1,17 @@
 import axios from 'axios';
-import { API, getApi } from '../api/API';
-import { ACTION_HOME } from './ActionConst';
-
-let action_struct = {
-  type: ""
-}
-
-const createAction = (type, ...args) => {
-  if (!type) return null;
-  let action = Object.assign(action_struct, { type: type })
-  switch (type) {
-    case ACTION_HOME.GET_HOME_LIST:
-  }
-  return action;
-}
+import { API, apiInstance } from '../api/API';
+import { ACTION_CONSTANTS } from './ActionConst';
+import { createAction } from './ActionCreate';
 
 export const HomeAction = {
   createAction: createAction,
   get_home_list: () => {
     return (dispatch) => {
-      return axios.get(getApi(API.GET_HOME_LIST))
+      return apiInstance.get(API.GET_HOME_LIST)
         .then(res => {
-          let action = createAction(ACTION_HOME.GET_HOME_LIST);
-          Object.assign(action, {newsList: res.data.list})
+          let action = createAction(ACTION_CONSTANTS.GET_HOME_LIST);
+          action = Object.assign(action, { newsList: res.data.list });
+          console.log(action);
           dispatch(action);
         })
     }
