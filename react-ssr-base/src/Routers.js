@@ -3,23 +3,17 @@ import { renderRoutes } from 'react-router-config';
 import Home, { loadHomeData } from './containers/home/Home.jsx';
 import { Login } from './containers/login/Login.jsx';
 import Header from './components/head/Header.jsx';
+import { onIsLogin } from './store/Action.Login.js';
 
-
-export const AppRouters = (props) => {
-  console.log(props);
-  return (
-    <div>
-      <Header></Header>
-      { renderRoutes(props.route.routes) }
-    </div>
-  )
-}
+import { AppRouters } from './RouteApp';
+import { NotFund } from './containers/notfund/NotFund'
 
 export const Routers = [
   {
     path: "/",
     component: AppRouters,
     key: "home",
+    loadData: AppRouters.loadData,
     routes: [
       {
         path: '/',
@@ -33,9 +27,12 @@ export const Routers = [
         exact: true,
         component: Login,
         key: "login"
+      },
+      {
+        component:NotFund,
       }
     ]
-  }
+  },
 ]
 
 

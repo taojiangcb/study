@@ -63,7 +63,6 @@ export default (
 
 2.app.js 建立客户端路由
 ```
-
 import React from 'react';
 import ReactDom from 'react-dom';
 
@@ -306,3 +305,45 @@ export const render = (store, req) => {
  renderRouters - react-router-config
 
  
+ ### SSR 样式渲染
+  1. 客户端使用 style-loader css-loader
+   ```
+   module: {
+    rules: [
+      {
+        test: /\.css?$/,
+        use: [
+          'style-loader', {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: true,
+            }
+          }
+        ]
+      }
+    ]
+  },
+ ```
+  1. 服务端使用 isomorphic-style-loader 
+   ```
+   module: {
+    rules: [
+      {
+        test: /\.css?$/,
+        use: [
+          'isomorphic-style-loader', {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            }
+          }
+        ]
+      }
+    ]
+  },
+   ```
+
+
+   isomorphic-style-loader 和 style-loader 的区别
+   isomorphic-style-loader 

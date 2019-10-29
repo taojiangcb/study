@@ -8,7 +8,6 @@ import thunk from 'redux-thunk';
 
 //客户端获取的store
 export const clientStore = () => {
-    console.log(".......... clientStore");
     let defaultState = window.content;
     let composeEnhancers = window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     return createStore(reducer,defaultState, composeEnhancers(

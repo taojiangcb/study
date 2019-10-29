@@ -9,12 +9,28 @@ let ssr_client = merge(baseConfig, {
   entry: {
     path: path.resolve(__dirname, '../src/client/App.js'),
   },
-  
   output: {
     filename: "index.js",
     path: Paths.SSR_CLIENT,
   },
-  plugins:[
+
+  module: {
+    rules: [
+      {
+        test: /\.css?$/,
+        use: [
+          'style-loader', {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: true,
+            }
+          }
+        ]
+      }
+    ]
+  },
+  plugins: [
     // new HtmlPlign({
     //   template:path.resolve(__dirname,'../template/index.html'),
     //   title:"app title"

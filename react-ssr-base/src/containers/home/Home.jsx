@@ -2,6 +2,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { HomeAction } from '../../store/Action.Home';
+
+import style from './index.css';
+
 class Home extends React.Component {
   constructor(props) { super(props); }
   render() {
@@ -9,12 +12,14 @@ class Home extends React.Component {
     return (
       <div>
         <h1>{name}</h1>
-        <div> 同构服务器路由 </div>
-        {
-          newsList && newsList.map(item => {
-            return <p key={item.id}>{item.title}</p>
-          })
-        }
+        <div > 同构服务器路由 </div>
+        <div className={style.test}>
+          {
+            newsList && newsList.map(item => {
+              return <p key={item.id}>{item.title}</p>
+            })
+          }
+        </div>
         <button onClick={(e) => { this.props.getHomeList() }}> 点击一下 </button>
       </div>
     )
@@ -35,8 +40,6 @@ export const loadHomeData = (store) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log('....home state');
-  console.log(state);
   return {
     name: state.Home.name,
     newsList: state.Home.newsList,

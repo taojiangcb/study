@@ -14,6 +14,23 @@ let ssr_server = merge(baseConfig, {
     filename: "bundle-ssr.js",
     path: Paths.SSR_BUILD,
   },
+
+  module: {
+    rules: [
+      {
+        test: /\.css?$/,
+        use: [
+          'isomorphic-style-loader', {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            }
+          }
+        ]
+      }
+    ]
+  },
+
   externals: [nodeExternals()]
 })
 

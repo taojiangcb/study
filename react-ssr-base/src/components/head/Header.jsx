@@ -7,9 +7,6 @@ import { onLogOut, onLogin } from '../../store/Action.Login';
 
 const Header = (props) => {
   let { loginState } = props
-
-  console.log('....');
-
   return (
     <div>
       <span >Home</span>

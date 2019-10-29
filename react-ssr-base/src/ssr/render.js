@@ -27,10 +27,10 @@ let template = `
 </html>
 `;
 
-export const render = (store, req) => {
+export const render = (store, req, context) => {
   let content = renderToString(
     <Provider store={store}>
-      <StaticRouter location={req.path} content={{}}>
+      <StaticRouter location={req.path} context={context}>
         {renderRoutes(Routers)}
       </StaticRouter>
     </Provider>

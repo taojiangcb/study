@@ -19,16 +19,21 @@ let RESP = {
 let loginMap = new Map();
 let apiRouter = express.Router();
 
-apiRouter.post(API.LOGIN, (req, res, next) => {
-  console.log('login ... .. .. . . ');
+let login = (req,res,next)=> {
   let { user } = req.query;
   if (!loginMap.has(user)) {
     loginMap.set(user, true);
   }
   let data = Object.assign(RESP, { success: true });
-  console.log(data);
-  console.log('......');
   res.send(data);
+}
+
+apiRouter.post(API.IS_LOGIN,(req,res,next)=> {
+  login(req,res,next);
+})
+
+apiRouter.post(API.LOGIN, (req, res, next) => {
+  login(req,res,next);
 })
 
 apiRouter.post(API.LOGOUT, (req, res) => {

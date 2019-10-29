@@ -6,7 +6,8 @@ export const API = {
   GET_HOME_LIST: '/api/get_home_list',
   LOGIN:'/api/login',
   LOGOUT:'/api/logout',
-  TRANSLATE:"/api/translate"
+  TRANSLATE:"/api/translate",
+  IS_LOGIN:"/api/isLogin"
 }
 
 export const apiInstance = axios.create({

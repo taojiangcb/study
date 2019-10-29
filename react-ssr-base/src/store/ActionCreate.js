@@ -5,6 +5,6 @@ let action_struct = {
 
 export const createAction = (type, ...args) => {
   if (!type) return null;
-  let action = Object.assign(action_struct, { type: type});
+  let action = Object.assign({},action_struct, { type: type});
   return action;
 }

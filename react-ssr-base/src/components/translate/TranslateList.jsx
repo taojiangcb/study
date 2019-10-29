@@ -10,7 +10,7 @@ const TranslateList = (props)=> {
 
 const mapStateToProps = (state)=> {
   return {
-
+    
   }
 }
 

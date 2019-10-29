@@ -9,11 +9,11 @@ export default (state = defaultState, action) => {
   let newState = null;
   switch(action.type) {
     case ACTION_CONSTANTS.CHANGE_LOGIN_STATE:
-      newState = Object.assign(defaultStatus,{isLogin:action.loginState});
+      newState = Object.assign({},defaultState,{isLogin:action.loginState});
       return newState;
       break;
     case ACTION_CONSTANTS.CHANGE_LOGIN_ERROR:
-      newState = Object.assign(defaultStatus,{isLogin:action.loginState,loginError:action.code});
+      newState = Object.assign({},defaultState,{isLogin:action.loginState,loginError:action.code});
       return newState;
       break;
   }

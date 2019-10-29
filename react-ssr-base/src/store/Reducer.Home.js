@@ -9,8 +9,6 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case ACTION_CONSTANTS.GET_HOME_LIST:
-      console.log('..........')
-      console.log(action);
       return {
         newsList: action.newsList,
         name: state.name

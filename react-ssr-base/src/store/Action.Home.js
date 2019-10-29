@@ -10,7 +10,7 @@ export const HomeAction = {
       return apiInstance.get(API.GET_HOME_LIST)
         .then(res => {
           let action = createAction(ACTION_CONSTANTS.GET_HOME_LIST);
-          action = Object.assign(action, { newsList: res.data.list });
+          action = Object.assign({},action, { newsList: res.data.list });
           console.log(action);
           dispatch(action);
         })
