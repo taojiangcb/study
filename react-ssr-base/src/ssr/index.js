@@ -15,8 +15,6 @@ app.get('*', (req, res) => {
   //get到相关的promiese
   let promisess = [];
 
-
-
   matchedRouters.forEach(item => {
     if (item.route.loadData) {
       promisess.push(item.route.loadData(store));
@@ -28,8 +26,10 @@ app.get('*', (req, res) => {
     .then(load => {
       let context = {};
       let html = render(store, req, context);
-      console.log(context);
-      if(context.NOT_FUND) {
+      if (context.action === 'REPLACT') {
+        res.redirect(301, context.url);
+      }
+      else if (context.NOT_FUND) {
         res.status(404);
       }
       res.send(html);

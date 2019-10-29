@@ -1,17 +1,16 @@
 
 import React from 'react';
 
-import { Header } from "../../components/head/Header.jsx";
+import { Redirect } from 'react-router-dom'
 
 export class Login extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
+  constructor(props) { super(props); }
   render() {
     return (
       <div>
         Login
+        <Redirect to="/" />
       </div>
     )
   }

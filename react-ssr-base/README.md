@@ -304,8 +304,24 @@ export const render = (store, req) => {
 ### 多级路由
  renderRouters - react-router-config
 
+### ssr 404 处理
+
+### ssr 301 处理 
+  StaticRouter 内容已经处理了301重定向内容，只要内部内容走到 Redictor 就会在 staticContext内容塞入{action:'REPLACE',url:重定向的地址} 所以只要在最完层处理就好了
+```
+ let context = {};
+      let html = render(store, req, context);
+      if(context.action === 'REPLACT') {
+        res.redirect(301,context.url);
+      }
+      else if(context.NOT_FUND) {
+        res.status(404);
+      }
+      res.send(html);
+```
+
  
- ### SSR 样式渲染
+### SSR 样式渲染
   1. 客户端使用 style-loader css-loader
    ```
    module: {
