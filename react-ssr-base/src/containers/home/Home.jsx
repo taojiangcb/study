@@ -1,8 +1,12 @@
 
 import React from 'react';
+import { Fragment } from 'react-dom';
 import { connect } from 'react-redux';
 import { HomeAction } from '../../store/Action.Home';
+import { Helmet } from 'react-helmet'
 import style from './index.css';
+
+
 
 class Home extends React.Component {
   constructor(props) { super(props); }
@@ -22,7 +26,11 @@ class Home extends React.Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
+        <Helmet>
+          <title> Hello ssr </title>
+          <meta name="description" content="Hello Study ssr"/>
+        </Helmet>
         <h1>{name}</h1>
         <div > 同构服务器路由 </div>
         <div className={style.test}>
@@ -33,7 +41,7 @@ class Home extends React.Component {
           }
         </div>
         <button onClick={(e) => { this.props.getHomeList() }}> 点击一下 </button>
-      </div>
+      </React.Fragment>
     )
   }
 

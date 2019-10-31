@@ -655,3 +655,59 @@ exports._insertCss = 【作用同上面的addStylesToDom】;
 ```
 
 从如上伪代码可以看出，isomorphic-style-loader主要是导出了2个函数，_getCss和_insertCss。让用户根据实际环境来调用，而不是像style-loader那样。在浏览器环境中就可以调用_insertCss(_getCss())来将样式插入到DOM中；在node环境中就不能调用_insertCss，但能调用_getCss获取样式字符串，根据实际需求来使用。
+
+### Seach engine optimization  SEO 优化
+```
+1 Title & Descript 的真正使用 (全文所有)
+  Title        网站名称
+  Description  提升网站的转化率
+
+2 字媒体
+  1 原创
+  2 连接
+     内部链接   (内容相关)
+     外部链接   跳转当前网站
+  
+React-helmet (提升网站优化) 定制每个页面的 description
+  <Fragment>
+    <Helmet>
+      <title></title>
+      <meta name="description" content="转化描述">
+    </Helment>
+    <......some code>
+  </Fragment>
+
+```
+
+### 在服务器端进行 渲染的时候 使用 helmet 进行seo的优化
+```
+import { Helmet } from 'react-helmet';
+export const render = (store, req, context) => {
+    let content = renderToString()
+    const helmet = Helmet.renderStatic();
+    let html = `<html lang="en">
+    <head>
+      ${helmet.title.toString()}
+      ${helmet.meta.toString()}
+      <style>${context.css}</style>
+    </head>
+    ...`
+}
+```
+
+### ssr 缺点
+  1. 服务器成本压力大
+  2. 开发debug 成本高
+  3. bug有定位有3端排查  react node api 
+  
+### 预渲染
+```
+  1. prerender 工具
+  2. prerender 服务是单独给 seo 爬虫使用的
+  3. prerender 的原理是 当爬虫进入网站的时候 会模拟一个 浏览器 去获取读取 react 网站的内容，生成一个 html 返回一个 seo
+  4. https://www.prerender.is
+
+预渲染架构
+    - user -> nginx -> react-server -> user
+    - seo -> nginx -> prerender -> react-server -> seo
+ ```

@@ -30,6 +30,7 @@ app.get('*', (req, res) => {
   /** 相关的promiss 处理完成之后 开始渲染page */
   Promise.all(promisess)
     .then(load => {
+      //定义服务器的路由渲染的穿透参数
       let context = {};
       let html = render(store, req, context);
       if (context.action === 'REPLACT') {
