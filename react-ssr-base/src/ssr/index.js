@@ -17,7 +17,13 @@ app.get('*', (req, res) => {
 
   matchedRouters.forEach(item => {
     if (item.route.loadData) {
-      promisess.push(item.route.loadData(store));
+      //数据转载的时候容错处理，不管接口是否请求成功，最后都要进行渲染，失败的接口最多不显示内容而已。
+      let promise = new Promise((resolve, reject) => {
+        item.route.loadData(store)
+          .then(resolve)
+          .catch(resolve)
+      });
+      promisess.push(promise);
     }
   });
 

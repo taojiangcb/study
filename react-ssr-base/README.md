@@ -28,7 +28,61 @@
 6. js代码拿到浏览器是的地址
 7. js大妈根据地址返回不同的路由内容
 
-### 环境的搭建
+### 项目结构
+```
+  config  //目录
+    - api-dev-server.mjs    api server 服务
+    - env.js                环境变量定义
+    - Paths.js              目录的定义
+    - webpack.base.js       编译的基本配置
+    - webpack.client.js     客户端编译的配置
+    - webpack.server.js     服务端编译的配置
+  dist    ssr 服务端输出的目录
+  public  ssr 客户端端输出的目录
+  src 源代码
+    - api 
+      - API.js          api服务接口的定义
+      - HomeList.js     接口测试数据
+      - TranslateList   接口测试数据
+    - client  
+      App.js            ssr 编译客户端的入口
+    - components        公共组件
+      - header
+      - translatelist
+    - containers        页面级组件
+      - home
+      - login
+      - notfund         404 页面
+    - ssr       
+      - index           ssr 服务端入口
+      - Render          服务端渲染处理
+    - sotre             redux 数据域
+      - Action.*.js     各个模块 reducer 消息传递是处理 先关的业务处理
+      - Reducer.*.js    redux 的数据更新处理，接收到对应 action 更新业务
+      - Store.js        redux 的入口 Provider 组件数据源
+      - ActionConst.js  数据流穿透消息的名称定义
+    - RouteApp.js       客户端 & 服务端 路由入口
+    - Routers.js        客户端 & 服务端 共用的路由数据
+```
+
+### 环境 & 模块的搭建
+模块预设注意事项
+  1. 客户端入口&服务端入口分离
+  2. 路由组件的数据公共
+  3. store 数据入口分离 客户端 & 服务端
+  4. 页面组件公共使用
+
+环境搭建
+  1. webapck 拆分服务端和客户端编译
+     1. "dev:build:server": "webpack --mode development --config ./config/webpack.server.ssr.js --watch",
+     2. "dev:build:client": "webpack --mode development --config ./config/webpack.client.ssr.js --watch"
+  2. ssr 服务指定 client 的目录入口 app.use(express.static('public'));
+  3. ssr 服务开发是监测刷新重启
+     1. "dev:ssr:start": "nodemon --watch dist --exec node ./dist/bundle-ssr.js",
+  4. 监测api服务开发刷新
+     1. "dev:api:dev": "nodemon --watch config --exec babel-node ./config/api-dev-server.mjs",
+  5. 合并命令执行
+     1. "dev": "npm-run-all --parallel dev:**",
 
 
 ### SSR 同构路由 
@@ -47,7 +101,6 @@ Redner.js 存放服务端路由
 1.建立Router文件
 ```
 import React from 'react';
-
 import { Route } from 'react-router-dom';
 import { Home } from './containers/home/Home.jsx';
 import { Login } from './containers/login/Login.jsx';
@@ -299,15 +352,146 @@ export const render = (store, req) => {
 
 1. 使用场景
    1. 在请求时需要独特的配置 
+   
 
+API.js
+```
+  import axios from 'axios';
+  let API_HOST = "http://localhost:3010";
+
+  export const API = {
+    GET_HOME_LIST: '/api/get_home_list',
+    LOGIN:'/api/login',
+    LOGOUT:'/api/logout',
+    TRANSLATE:"/api/translate",
+    IS_LOGIN:"/api/isLogin"
+  }
+
+  export const apiInstance = axios.create({
+    baseURL:API_HOST
+  })
+
+```
 
 ### 多级路由
  renderRouters - react-router-config
 
-### ssr 404 处理
+### ssr服务器处理 404 处理
+```
+1. 定义服务器路由的穿透参数
+  //定义服务器的路由渲染的穿透参数
+  let context = {};
+  let html = render(store, req, context);
+
+  export const render = (store, req, context) => {
+  let content = renderToString(
+    <Provider store={store}>
+      //指定当前路由的路径和路由的穿透参数 
+      //context 穿透参数 贯穿整个路由的组件
+      //localtion 当前路由的路径
+      <StaticRouter location={req.path} context={context}>
+        {renderRoutes(Routers)}
+      </StaticRouter>
+    </Provider>
+  );
+  ......some code
+  });
+
+2.定义404 组件
+  export class NotFund extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    console.log(this.props);
+    this.props.staticContext && (this.props.staticContext.NOT_FUND = true)
+    return (
+      <div>
+        Not Fund page 404
+      </div>
+    )
+  }
+}
+3. 在组件里标记 路由穿透参数 context 是否都了404
+  FoundPage.jsx
+  render() {
+    //this.props.staticContext 只有在服务器渲染时候才会有 staticContext
+    //这个参数来自于 staticRouter 服务器路由的穿透参数
+    this.props.staticContext && (this.props.staticContext.NOT_FUND = true)
+  }
+
+4.在路由数据源中插入 404 组件
+  export const Routers = [
+  {
+    path: "/",
+    component: AppRouters,
+    key: "home",
+    loadData: AppRouters.loadData,
+    routes: [
+      {
+        path: '/',
+        component: Home,
+        exact: true,
+        loadData: loadHomeData,
+        key: "home"
+      },
+      {
+        path: "/login",
+        exact: true,
+        component: Login,
+        key: "login"
+      },
+      {
+        component:NotFund,    //404 组件
+      }
+    ]
+  },
+)
+5.路由数据的使用方式 renderRoutes 的使用
+  1.客户端 App.js
+    import { renderRoutes } from 'react-router-config';
+    const App = () => (
+    <Provider store={clientStore()}>
+      <BrowserRouter>
+        {renderRoutes(Routers)}
+      </BrowserRouter>
+    </Provider>
+    render(<App />, document.getElementById("root"));
+
+  2.服务端 render.js
+    import { renderRoutes } from 'react-router-config';
+    let content = renderToString(
+    <Provider store={store}>
+      //指定当前路由的路径和路由的穿透参数 
+      //context 穿透参数 贯穿整个路由的组件
+      //localtion 当前路由的路径
+      <StaticRouter location={req.path} context={context}>
+        {renderRoutes(Routers)}
+      </StaticRouter>
+    </Provider>
+  );
+
+  3.路由入口 / 路径组件 AppRouters
+    import { renderRoutes } from 'react-router-config';
+    export const AppRouters = (props) => {
+    return (
+      <div>
+        <Header></Header>
+        { renderRoutes(props.route.routes) }
+      </div>
+    )
+  }
+
+  AppRouters.loadData = (store)=> {
+    return store.dispatch(onIsLogin());
+  }
+
+
+]
+```
 
 ### ssr 301 处理 
-  StaticRouter 内容已经处理了301重定向内容，只要内部内容走到 Redictor 就会在 staticContext内容塞入{action:'REPLACE',url:重定向的地址} 所以只要在最完层处理就好了
+StaticRouter 内容已经处理了301重定向内容，只要内部内容走到 Redictor 就会在 staticContext内容塞入{action:'REPLACE',url:重定向的地址} 所以只要在最完层处理就好了
 ```
  let context = {};
       let html = render(store, req, context);
@@ -320,8 +504,85 @@ export const render = (store, req) => {
       res.send(html);
 ```
 
- 
+### promise 请求失败的时候处理
+```
+matchedRouters.forEach(item => {
+    if (item.route.loadData) {
+      //数据转载的时候容错处理，不管接口是否请求成功，最后都要进行渲染，失败的接口最多不显示内容而已。
+      let promise = new Promise((resolve, reject) => {
+        item.route.loadData(store)
+          .then(resolve)
+          .catch(resolve)
+      });
+      promisess.push(promise);
+    }
+  });
+```
+
 ### SSR 样式渲染
+index.css
+```
+body {
+  background-color: green;
+}
+
+.test {
+  background-color:red;
+}
+```
+操作方式
+```
+  1.在css引入的模块里 导入css
+  Home.jsx 里导入 import style from './index.css';
+  render() {
+      //将样式传出去，用于服务器渲染
+      //staticContent 是 staticRouter 路由的穿透对象，所有路由组件都可以获取到
+      if(this.props.staticContext) {
+        this.props.staticContext.css = style._getCss();
+      }
+  }
+  2.相关的dom上面绑定 css 样式名称
+    <div className={style.test}></div>
+
+  3.将样式插入到服务器渲染的temple中
+    let template = `
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Document</title>
+      <style><!--css--></style>
+    </head>
+    <body>
+      <div id="root"><!--content--></div>
+      <script>
+        window.content = $SOTRE;
+      </script>
+      <script src="index.js"></script>
+    </body>
+    </html>
+    `;
+
+    export const render = (store, req, context) => {
+      let content = renderToString(
+        <Provider store={store}>
+          <StaticRouter location={req.path} context={context}>
+            {renderRoutes(Routers)}
+          </StaticRouter>
+        </Provider>
+      );
+      let storeData = JSON.stringify(store.getState());
+      //插入服务样式
+      template = template.replace('<!--css-->',context.css);
+      //注水服务获取到的 api 数据
+      template = template.replace('$SOTRE', storeData);
+      //服务器渲染的组件插入
+      let html = template.replace('<!--content-->', content);
+      console.log(html);
+      return html;
+    }
+
+```
+
   1. 客户端使用 style-loader css-loader
    ```
    module: {
@@ -359,7 +620,38 @@ export const render = (store, req) => {
     ]
   },
    ```
+#### css-loader原理
+ css 文件被转成js 文件，css-loader可以按照一定的规则将类名等转化成具有全局唯一性的名字。即使2个文件中都有叫root的类名，经css-loader转换后，它们的类名可以完全不同，这就是css的模块化。
+模块化以后，用户完全不知道被转换后的类名，这样就没法使用了。为了让用户知道类名，css-loader就需要对转换后的内容做些改变。css-loader实际转换后的内容等价于如下伪代码:
+```
+module.exports = {
+	toString: () => “原css文件中的样式(类名被转换了，代码可能也被压缩过)”
+	locals: {
+		[原文件中写的类名等]: “被转换后的实际类名等”
+	}
+}
+```
+这样通过其中的locals对象，就很容易知道被转换后的类名了。举个例子，假设css原文件中有个类名为home，导入该css文件时用变量s接收，s.locals.home的值就是被转换后的类名了。
 
+##### style-loader原理
+有了css-loader，style-loader的实现就很简单了。先通过css-loader把css文件转换成一个对象，假设叫content，该对象就是上面css-loader转换css文件后导出的对象。然后简单粗暴的通过DOM操作将content中的样式插入到style标签中。最后将content.locals导出，方便用户使用类名、动画名等。同时经过css-loader和style-loader转换后的内容可以用如下伪代码表示：
+```
+var content = 【css-loader转换css文件后的结果】;
+addStylesToDom(content.toString());
+module.exports = content.locals;
+```
+#### isomorphic-style-loader原理
+我们知道了style-loader的原理，它很简单，但又很粗暴。粗暴的是，直接将样式通过DOM操作进行插入。对于浏览器环境则很好，很方便，不需要用户干预。但是对于node环境，这就没法愉快的玩耍了。node环境需要的是将样式插入到动态生成的html字符串中，而不是进行DOM操作。这时就需要用到isomorphic-style-loader，而不是style-loader。
+  isomorphic-style-loader没有像style-loader那样直接进行DOM操作，而是导出了一些辅助方法，让用户依据实际情况来调用不同的方法。同时经过css-loader和isomorphic-style-loader转换后的内容可以用如下伪代码表示
+```
+var content = 【css-loader转换css文件后的结果】;
+// 方便用户使用类名等
+exports = module.exports = content.locals || {}; 
+exports._getContent = () => content;
+// 方便用户获取样式
+exports._getCss = () => context.toString();	
+// 方便用户将样式插入到DOM中
+exports._insertCss = 【作用同上面的addStylesToDom】;
+```
 
-   isomorphic-style-loader 和 style-loader 的区别
-   isomorphic-style-loader 
+从如上伪代码可以看出，isomorphic-style-loader主要是导出了2个函数，_getCss和_insertCss。让用户根据实际环境来调用，而不是像style-loader那样。在浏览器环境中就可以调用_insertCss(_getCss())来将样式插入到DOM中；在node环境中就不能调用_insertCss，但能调用_getCss获取样式字符串，根据实际需求来使用。

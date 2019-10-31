@@ -16,6 +16,7 @@ let template = `
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <style><!--css--></style>
 </head>
 <body>
   <div id="root"><!--content--></div>
@@ -36,7 +37,11 @@ export const render = (store, req, context) => {
     </Provider>
   );
   let storeData = JSON.stringify(store.getState());
+  //插入服务样式
+  template = template.replace('<!--css-->',context.css);
+  //注水服务获取到的 api 数据
   template = template.replace('$SOTRE', storeData);
+  //服务器渲染的组件插入
   let html = template.replace('<!--content-->', content);
   console.log(html);
   return html;

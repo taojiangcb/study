@@ -2,13 +2,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { HomeAction } from '../../store/Action.Home';
-
 import style from './index.css';
 
 class Home extends React.Component {
   constructor(props) { super(props); }
+
+  // componentWillMount() {
+  //   if(this.props.staticContext ) {
+  //     console.log(styles.__getCss());
+  //   }
+  // }
+
   render() {
     let { name, newsList } = this.props;
+
+    //将样式传出去，用于服务器渲染
+    if(this.props.staticContext) {
+      this.props.staticContext.css = style._getCss();
+    }
+
     return (
       <div>
         <h1>{name}</h1>
