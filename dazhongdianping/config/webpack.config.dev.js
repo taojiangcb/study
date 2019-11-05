@@ -1,13 +1,17 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path')
+const webpack = require('webpack')
 const merge = require('webpack-merge');
 const baseConf = require('./webpack.config.base');
-var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+
+const env = require('./env')
+
+env();
 
 const webpack_dev = merge(baseConf, {
   entry: path.resolve(__dirname, '../app/index.jsx'),
   output: {
-    path: path.resolve(__dirname, '../'),
+    path: path.resolve(__dirname, '../build'),
     filename: "bundle.js"
   },
 
@@ -21,9 +25,9 @@ const webpack_dev = merge(baseConf, {
       }
     },
     contentBase: "./public", //本地服务器所加载的页面所在的目录
-    colors: true, //终端中输出结果为彩色
-    historyApiFallback: true, //不跳转
-    inline: true, //实时刷新
+    // colors: true, //终端中输出结果为彩色
+    // historyApiFallback: true, //不跳转
+    // inline: true, //实时刷新
     hot: true  // 使用热加载插件 HotModuleReplacementPlugin
   },
 
@@ -37,7 +41,7 @@ const webpack_dev = merge(baseConf, {
 
     // 可在业务 js 代码中使用 __DEV__ 判断是否是dev模式（dev模式下可以提示错误、测试报告等, production模式不提示）
     new webpack.DefinePlugin({
-      __DEV__: JSON.stringify(JSON.parse((process.env.NODE_ENV == 'dev') || 'false'))
+      __DEV__: true
     })
   ]
 })
