@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { srcRoot, buildDir, pageDir, publicDir,distDir } = require('./paths');
+const { srcRoot, buildDir, pageDir, staticDir,publicDir,distDir } = require('./paths');
 const merge = require('webpack-merge');
 const baseConf = require('./webpack.config.base');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -30,12 +30,10 @@ const production = merge(baseConf, {
   output: {
     path: resolve(__dirname, "../dist"),
     filename: "[name].[chunkhash:8].js",
-    publicPath: '/'
   },
 
   module: {
     rules: [
-
       {
         test: /\.less$/,
         exclude: /node_modules/,
@@ -45,14 +43,6 @@ const production = merge(baseConf, {
         test: /\.css$/,
         exclude: /node_modules/,
         loader: ExtractTextPlugin.extract('style', 'css!postcss')
-      },
-      {
-        test: /\.(png|gif|jpg|jpeg|bmp)$/i,
-        loader: 'url-loader?limit=5000&name=img/[name].[hash:8].[ext]'
-      },
-      {
-        test: /\.(png|woff|woff2|svg|ttf|eot)($|\?)/i,
-        loader: 'url-loader?limit=5000&name=fonts/[name].[hash:8].[ext]'
       }
     ]
   },
@@ -60,7 +50,6 @@ const production = merge(baseConf, {
   optimization: {
     minimize: true,
     minimizer: [
-
       // This is only used in production mode
       new TerserPlugin({
         terserOptions: {

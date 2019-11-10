@@ -5,7 +5,11 @@
         "es6": true,
         "node": true
     },
-    "extends": ["eslint:recommended"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaVersion": 6,
         "ecmaFeatures": {
@@ -17,7 +21,9 @@
     "plugins": [
         "react"
     ],
+    "globals": {},
     "rules": {
+        "react/prop-types": "off",
         "indent": 0,
         "linebreak-style": 0,
         "quotes": 0,

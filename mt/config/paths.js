@@ -5,6 +5,7 @@ module.exports = {
   pageDir:resolve(__dirname,'../src/page'),
   buildDir:resolve(__dirname,'../build'),
   publicDir:resolve(__dirname,'../public'),
-  distDir:resolve(__dirname,'../dist')
+  distDir:resolve(__dirname,'../dist'),
+  staticDir:resolve(__dirname,'../src/static')
 }
 

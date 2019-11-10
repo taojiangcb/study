@@ -1,0 +1,15 @@
+.star {
+  width: px2rem(20px);
+  height: px2rem(19px);
+  background-size: cover;
+  display: inline-block;
+}
+.star-icon {
+  background-image: url(../../../public/static/images/start-score/fullstar.png);
+}
+.star-half {
+  background-image: url(../../../public/static/images/start-score/halfstar.png);
+}
+.star-gary {
+  background-image: url(../../../public/static/images/start-score/gray-star.png);
+}

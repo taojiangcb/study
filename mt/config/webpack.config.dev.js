@@ -6,6 +6,7 @@ const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const { buildDir } = require('./paths')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 const env = require('./env')();
+var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 const webpack_dev = merge(build_dev_conf, {
 
@@ -29,10 +30,30 @@ const webpack_dev = merge(build_dev_conf, {
 
   plugins: [
     // 热加载插件
-    // new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+
     // 打开浏览器
     new OpenBrowserPlugin({
       url: 'http://localhost:8080'
+    }),
+
+    new FriendlyErrorsPlugin({
+      compilationSuccessInfo: {
+        messages: ['You application is running here http://localhost:8080'],
+        notes: ['Some additionnal notes to be displayed unpon successful compilation']
+      },
+      onErrors: function (severity, errors) {
+        // You can listen to errors transformed and prioritized by the plugin
+        // severity can be 'error' or 'warning'
+      },
+      // should the console be cleared between each compilation?
+      // default is true
+      clearConsole: true,
+
+      // add formatters and transformers (see below)
+      // additionalFormatters: [],
+      // additionalTransformers: []
     }),
   ]
 })

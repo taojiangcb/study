@@ -2,12 +2,17 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import BottomBar from "../../../component/BottomBar/BottomBar.jsx";
+import Header from './Header/Header.jsx';
+import Category from './Category/Category.jsx';
+import ContentList from './ContentList/ContentList.jsx';
 
 
-export default (props) => {
+const Home = (props) => {
   return (
     <Fragment>
-      <BottomBar/>
+      <Header/>
+      <Category/>
+      <ContentList/>
     </Fragment>
   )
 }
@@ -20,6 +25,6 @@ const mapDispatchToProps = (dispatch) => {
   return {}
 }
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 

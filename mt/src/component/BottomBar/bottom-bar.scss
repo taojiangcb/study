@@ -1,18 +1,61 @@
 .bottom-bar {
-   position: fixed;
-   bottom: 0;
-   width: 100%;
-   height: 50px;
-   background-color: gba(246,246,246);
-   border-top: 1px solid #b6b6b6;
-   display: flex;
-   flex-direction: row;
-   .btn-item {
-     flex:1;
-     font-size: 11px; 
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
-   }
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: px2rem(50px);
+  background-color: rgb(246, 246, 246);
+  border-top: 1px solid #b6b6b6;
+  display: flex;
+  flex-direction: row;
+
+  .btn-item {
+    flex: 1;
+    font-size: px2rem(11px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    .btn-name {
+      text-align: center;
+    }
+    .act-tab-icon {
+      width: px2rem(25px);
+      height: px2rem(25px);
+      background-size: cover;
+      margin-bottom: px2rem(4px);
+      background-repeat: no-repeat;
+    }
+    .tab-icon {
+      width: px2rem(25px);
+      height: px2rem(25px);
+      background-size: cover;
+      margin-bottom: px2rem(4px);
+      background-repeat: no-repeat;
+    }
+    &.my {
+      .tab-icon {
+        background-image: url("../../../public/static/images/bottom-bar/myIcon.png");
+      }
+      .act-tab-icon {
+        background-image: url("../../../public/static/images/bottom-bar/myIconActive.png");
+      }
+    }
+    &.home {
+      .tab-icon {
+        background-image: url("../../../public/static/images/bottom-bar/homeIcon.png");
+      }
+      .act-tab-icon {
+        background-image: url("../../../public/static/images/bottom-bar/homeIconActive.png");
+      }
+    }
+    &.order {
+      .tab-icon {
+        background-image: url("../../../public/static/images/bottom-bar/orderIcon.png");
+      }
+      .act-tab-icon {
+        background-image: url("../../../public/static/images/bottom-bar/orderIconActive.png");
+      }
+    }
+  }
 }
