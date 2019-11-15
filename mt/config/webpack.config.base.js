@@ -3,17 +3,36 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { srcRoot, buildDir, pageDir,staticDir, publicDir } = require('./paths');
+const { srcRoot, buildDir, pageDir, staticDir, publicDir } = require('./paths');
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
-
 const env = require('./env')();
 
 module.exports = {
   mode: 'production',
   resolve: {
-    extensions: ['.js', '.jsx','.json','.mjs','.scss']
+    extensions: ['.js', '.jsx', '.json', '.mjs', '.scss']
   },
+  //多页构建
+  entry: {
+    //app 模块
+    app: path.resolve(__dirname, '../src/page/index/index.jsx'),
+    //详情分类
+    category: path.resolve(__dirname, '../src/page/category/Index.jsx')
+  },
+  //提取公共模块
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        common: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'all',
+          name: 'common'
+        }
+      }
+    }
+  },
+
   module: {
     rules: [
       {
@@ -74,9 +93,18 @@ module.exports = {
     }),
 
     require('autoprefixer'), //调用autoprefixer插件，例如 display: flex
-    // html 模板插件
+    // app 模块
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/page/index/index.html'),
+      filename: 'index.html',
+      chunks: ['common', 'app']
+    }),
+
+    // category 模块
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../src/page/category/Category.html'),
+      filename: 'category.html',
+      chunks: ['common', 'category']
     }),
 
     new CopyPlugin([

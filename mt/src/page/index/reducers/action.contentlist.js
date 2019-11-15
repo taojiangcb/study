@@ -9,18 +9,18 @@ export function contentInitAct(params) {
     data: params,
     receiver(state, action) {
       if (action.type === ACTION.CONTENT_LIST) {
-        if(action.page === 0) {
+        if (action.data.page === 0) {
           return {
             ...state,
             items: action.data.listItems,
             page: action.data.page,
-          }  
+          }
         }
         else {
           let items = state.items.concat(action.data.listItems);
           return {
-            items:items,
-            page:action.data.page
+            items: items,
+            page: action.data.page
           }
         }
       }

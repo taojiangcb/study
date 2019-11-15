@@ -9,8 +9,6 @@ const env = require('./env')();
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 const webpack_dev = merge(build_dev_conf, {
-
-
   devServer: {
     proxy: {
       // 凡是 `/api` 开头的 http 请求，都会被代理到 localhost:3000 上，由 koa 提供 mock 数据。
@@ -21,11 +19,43 @@ const webpack_dev = merge(build_dev_conf, {
       }
     },
     contentBase: buildDir, //本地服务器所加载的页面所在的目录
+    watchContentBase: true,
+    publicPath: '/',
+    historyApiFallback: {
+      // Paths with dots should still use the history fallback.
+      // See https://github.com/facebook/create-react-app/issues/387.
+      disableDotRule: true,
+    },
+    
+
     // public:'./public',
     // colors: true, //终端中输出结果为彩色
     // historyApiFallback: true, //不跳转
     // inline: true, //实时刷新
-    hot: true  // 使用热加载插件 HotModuleReplacementPlugin
+    hot: true,  // 使用热加载插件 HotModuleReplacementPlugin
+
+    // before(app, server) {
+
+    //   if (fs.existsSync(paths.proxySetup)) {
+    //     // This registers user provided middleware for proxy reasons
+    //     require(paths.proxySetup)(app);
+    //   }
+
+    //   // This lets us fetch source contents from webpack for the error overlay
+    //   app.use(evalSourceMapMiddleware(server));
+    //   // This lets us open files from the runtime error overlay.
+    //   app.use(errorOverlayMiddleware());
+
+    //   // This service worker file is effectively a 'no-op' that will reset any
+    //   // previous service worker registered for the same host:port combination.
+    //   // We do this in development to avoid hitting the production cache if
+    //   // it used the same host and port.
+    //   // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
+    //   app.use(noopServiceWorkerMiddleware());
+
+    //   app.use('/api', apiRouters);
+
+    // },
   },
 
   plugins: [

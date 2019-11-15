@@ -24,6 +24,8 @@
     "globals": {},
     "rules": {
         "react/prop-types": "off",
+        "no-undef":"off",
+        "no-def":"off",
         "indent": 0,
         "linebreak-style": 0,
         "quotes": 0,

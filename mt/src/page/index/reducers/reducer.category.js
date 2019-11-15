@@ -6,7 +6,6 @@ let defaultState = {
 }
 
 export const categoryReducer = (state = defaultState, action) => {
-  console.log(action);
   if (action.type == ACTION.CATEGORY_LIST) {
     return normalReducer(state, action);
   }

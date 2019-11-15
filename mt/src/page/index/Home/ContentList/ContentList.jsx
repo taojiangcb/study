@@ -4,65 +4,37 @@ import React, { Component, Fragment, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { contentInitAct, featch_content } from '../../reducers/action.contentlist';
 import ListItem from './ListItem/ListItem';
-import { Loading } from '../../../../component/loading/Loading';
+import ScrollView from '../../../../component/scroll-view/ScrollView';
 
 const initData = (props) => {
   let [isInit, setInit] = useState(false);
-  let [page, setPage] = useState(0);
-  let [sent, setSent] = useState(false);
 
   useEffect(() => {
-    !isInit && props && props.featchData(page);
+    !isInit && props && props.featchData(0);
     setInit(true);
     return () => { setInit(false) };
   })
-
-  useEffect(() => {
-    function onPageLoader() {
-      let scrollTop = document.documentElement.scrollTop;
-      let scrollHeight = document.body.scrollHeight;
-      let clientHeight = document.documentElement.clientHeight;
-      let proLoadDis = 30;
-      if ((scrollTop + clientHeight) >= (scrollHeight - proLoadDis)) {
-        console.log(`on page scroll load.....`);
-        if (page < 3) {
-          setPage(page + 1)
-          props.featchData(page);
-        }
-        else {
-          setSent(true);
-        }
-      }
-    }
-    window.addEventListener('scroll', onPageLoader)
-    return () => {
-      window.removeEventListener('scroll', onPageLoader)
-    }
-  }, [page])
-
-  return [page, sent]
 }
 
 const ContentList = (props) => {
-  let [page, sent] = initData(props);
+  initData(props);
   let { items } = props;
   return (
-    <div className="list">
+    <div className="list-wrapper">
       <div className="list-content">
         <span className="list-line"></span>
         <span className="list-title">附近商家</span>
         <span className="list-line"></span>
       </div>
-      <div>
+      <ScrollView onPageLoadFunc={props.featchData}>
         {
-          items && items.map(item => {
+          items && items.map((item, i) => {
             return (
-              <ListItem key={item.id + page} itemData={item}></ListItem>
+              <ListItem key={i} itemData={item}></ListItem>
             )
           })
         }
-      </div>
-      <Loading completed={sent}></Loading>
+      </ScrollView>
     </div >
   )
 }

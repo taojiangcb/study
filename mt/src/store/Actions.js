@@ -1,6 +1,5 @@
 
 /**
- * 
  * @param {上次的Preve} prevState 
  * @param {操作处理的Action} action 
  */
@@ -17,4 +16,3 @@ export const normalReducer = (state, action) => {
   let resultState = newState ? newState : state;
   return resultState;
 }
-

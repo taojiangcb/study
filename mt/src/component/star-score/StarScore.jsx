@@ -12,7 +12,6 @@ export const StarScore = wm_poi_score => {
   if (decimals == 0) half = false;
   integer += decimals > 5 ? 1 : 0;
   let gary = 5 - (integer + (half ? 1 : 0));
-  console.log(integer,gary,half);
   let starts = [];
   var i = 0;
   if (integer > 0) {

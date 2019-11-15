@@ -167,3 +167,164 @@ px2rem.scss 文件
   transform-origin: 0 0;
 }
 ```
+
+### 滚动加载
+1. 滚动页面到底部 公式 = 'document.documentElement.scrollTop + document.body.scrollHeight > document.documentElement.clientHeight'
+```
+useEffect(() => {
+    function onPageLoader() {
+      let scrollTop = document.documentElement.scrollTop;
+      let scrollHeight = document.body.scrollHeight;
+      let clientHeight = document.documentElement.clientHeight;
+      let proLoadDis = 30;
+      if ((scrollTop + clientHeight) >= (scrollHeight - proLoadDis)) {
+        console.log(`on page scroll load.....`);
+        if (page < 3) {
+          setPage(page + 1)
+          props.featchData(page);
+        }
+        else {
+          setSent(true);
+        }
+      }
+    }
+    window.addEventListener('scroll', onPageLoader)
+    return () => {
+      window.removeEventListener('scroll', onPageLoader)
+    }
+  }, [page])
+```
+
+### 路由参数的传递
+1. params
+```
+<Route path='/path/:name' component={Path}/>
+<link to="/path/2">xxx</Link>
+this.props.history.push({pathname:"/path/" + name});
+读取参数用:this.props.match.params.name
+```
+2. query
+```
+<Route path='/query' component={Query}/>
+<Link to={{ path : ' /query' , query : { name : 'sunny' }}}>
+this.props.history.push({pathname:"/query",query: { name : 'sunny' }});
+读取参数用: this.props.location.query.name
+```
+3. state
+```
+<Route path='/sort ' component={Sort}/>
+<Link to={{ path : ' /sort ' , state : { name : 'sunny' }}}> 
+this.props.history.push({pathname:"/sort ",state : { name : 'sunny' }});
+读取参数用: this.props.location.query.state 
+```
+4.search
+```
+<Route path='/web/departManange ' component={DepartManange}/>
+<link to="web/departManange?tenantId=12121212">xxx</Link>
+this.props.history.push({pathname:"/web/departManange?tenantId" + row.tenantId});
+读取参数用: this.props.location.search
+```
+
+```
+1, window.location.href
+      整个URl字符串(在浏览器中就是完整的地址栏)
+      本例返回值: http://www.x2y2.com:80/fisker/post/0703/window.location.html?ver=1.0&id=6#imhere
+
+2,window.location.protocol
+      URL 的协议部分
+      本例返回值:http:
+
+3,window.location.host
+      URL 的主机部分
+      本例返回值:www.x2y2.com
+
+4,window.location.port
+      URL 的端口部分
+      如果采用默认的80端口(update:即使添加了:80)，那么返回值并不是默认的80而是空字符
+      本例返回值:""
+
+5,window.location.pathname
+      URL 的路径部分(就是文件地址)
+      本例返回值:/fisker/post/0703/window.location.html
+
+6,window.location.search
+      查询(参数)部分
+      除了给动态语言赋值以外，我们同样可以给静态页面,并使用javascript来获得相信应的参数值
+      本例返回值:?ver=1.0&id=6
+
+7,window.location.hash
+      锚点
+      本例返回值:#imhere <src="http://feeds.feedburner.com/~s/fisker?i=http://www.x2y2.com/fisker/post/0703/window.location.html" type="text/javascript" charset="utf-8">
+```
+
+### 多页构建
+
+```
+
+//提取公共模块
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        common: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'all',
+          name: 'common'
+        }
+      }
+    }
+  },
+
+//多页构建
+entry: {
+  //app 模块
+  app: path.resolve(__dirname, '../src/page/index/index.jsx'),
+  //详情分类
+  category: path.resolve(__dirname, '../src/page/category/index.jsx')
+},
+
+// app 模块
+new HtmlWebpackPlugin({
+  template: path.resolve(__dirname, '../src/page/index/index.html'),
+  filename: 'index.html',
+  chunks: ['common', 'app']
+}),
+    
+// category 模块
+new HtmlWebpackPlugin({
+  template: path.resolve(__dirname, '../src/page/category/category.html'),
+  filename: 'category.html',
+  chunks: ['common', 'category']
+}),
+
+```
+
+### redux-logger 的使用
+```
+import logger from 'redux-logger';
+some code .....
+export const appStore = () => {
+  some code.....
+  cliStore = createStore(reducers, composeEnhancers(
+    applyMiddleware(thunk,logger)
+  ))
+  some code.....
+}
+
+```
+#### babel 支持async await  @babel/runtime @babel/polyfill
+
+```
+.babelrc
+"plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "absoluteRuntime": false,
+        "corejs": false,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }
+    ]
+  ]
+```

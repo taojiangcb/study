@@ -3,6 +3,7 @@ import React, { Component, Fragment, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { featch_category } from '../../reducers/action.category';
 import './Category.scss'
+import { InitData } from '../../../../controller/initData';
 
 const initItemsData = (props) => {
   let [isInit, setInit] = useState(false);
@@ -10,13 +11,13 @@ const initItemsData = (props) => {
     !isInit && props && props.featchData();
     setInit(true);
     return () => { setInit(false) };
-  })
+  }, [isInit]);
 }
 
 const itemRenderes = (items) => (
   <Fragment>
     {
-      items && items.map(item => {
+      items && items.map((item, i) => {
         return (
           <div key={item.code} className="category-item">
             <img className='item-icon' src={item.url} />
@@ -29,12 +30,14 @@ const itemRenderes = (items) => (
 )
 
 const Category = (props) => {
-  initItemsData(props);
+  // initItemsData(props);
+  InitData(props.featchData)
   let { items } = props;
-  items = items.splice(0, 8);
+  let icons = items.slice(0, 8);
+
   return (
     <div className="category-content">
-      {itemRenderes(items)}
+      {itemRenderes(icons)}
     </div>
   )
 }

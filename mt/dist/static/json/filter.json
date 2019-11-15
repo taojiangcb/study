@@ -693,7 +693,7 @@
 			}
 		}],
 		"activity_filter_list": [{
-			"group_title": "",
+			"group_title": "美团专送",
 			"support_multi_choice": 1,
 			"items": [{
 				"code": "-7",

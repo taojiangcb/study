@@ -1,7 +1,7 @@
 
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-import BottomBar from "../../../component/BottomBar/BottomBar.jsx";
+
 import Header from './Header/Header.jsx';
 import Category from './Category/Category.jsx';
 import ContentList from './ContentList/ContentList.jsx';

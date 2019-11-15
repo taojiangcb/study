@@ -18,7 +18,6 @@ const renderMonthNum = (data) => {
 }
 
 const renderMeituanFlag = (data) => {
-  console.log(data.delivery_type);
   if (data.delivery_type) {
     return <div className="item-meituan-flag">美团专送</div>
   }

@@ -8,7 +8,7 @@ const Header = (props) => {
   return (
     <Fragment>
       <div className="header">
-        <img className="banner-img" src="./images/header.c2a81a2250ded5e19a7681ff525eb33d.png"></img>
+        <img className="banner-img" src="./images/bannertemp.e8a6fa63.jpg"></img>
         <SearchBar />
       </div>
     </Fragment>

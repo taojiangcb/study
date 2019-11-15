@@ -1,0 +1,16 @@
+.order-page {
+  padding-bottom: px2rem(50px);
+  
+  .header {
+    width: 100%;
+    height: px2rem(64px);
+    background-color: #fff;
+    // border-bottom: 1px solid #b2b2b2;
+    font-size: px2rem(17px);
+    color: #333;
+    text-align: center;
+    line-height: px2rem(64px);
+    font-weight: bold;
+    box-shadow: px2rem(0px) px2rem(0px) px2rem(4px) rgba($color: #000000, $alpha: 0.3);
+  }
+}

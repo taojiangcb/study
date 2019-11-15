@@ -3,3 +3,9 @@ export const TAB_KEYS = {
   order: 'order',
   my: 'my'
 }
+
+export const CATE_TAB_KEYS = {
+  type: 'type',
+  order: 'order',
+  filter: 'filter'
+}
