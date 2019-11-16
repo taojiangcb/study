@@ -29,6 +29,12 @@ class Content extends React.Component {
   constructor(props) { super(props); }
   render() { return <Main /> }
 }
+let expObj;
+if(__DEV__) {
+  expObj = hot(module)(Content);
+}
+else {
+  expObj = Content;
+}
 
-export const HotContent = hot(module)(Content);
-
+export const HotContent = expObj;

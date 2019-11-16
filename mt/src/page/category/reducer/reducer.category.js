@@ -22,7 +22,7 @@ tabs[CATE_TAB_KEYS.filter] = {
 
 let defaultState = {
   tabs: tabs,
-  activeKey: CATE_TAB_KEYS.type,
+  activeKey: '',//CATE_TAB_KEYS.type,
   filterData: {},
   closePanel: true
 }

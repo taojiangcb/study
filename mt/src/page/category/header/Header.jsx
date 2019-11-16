@@ -8,11 +8,13 @@ import './Header.scss';
 
 function renderCategoryTypeItems(items, props) {
   let [childAct, setAct] = actState;
-  let click = (item, child) => {
+
+  let onClickHandler = (item, child) => {
     let chr = child.name + child.quantity;
     let group = item.name;
     setAct({ group: group, chr: chr })
   }
+
   return items && items.map(item => {
     let childrens = item.sub_category_list;
     return (
@@ -24,7 +26,7 @@ function renderCategoryTypeItems(items, props) {
               let actk = child.name + child.quantity;
               var clsname = 'child-item-title ' + (childAct.chr === actk ? 'active' : '');
               return (
-                <div onClick={e => { click(item, child) }} className="child-item-box" key={child.code}>
+                <div onClick={e => { onClickHandler(item, child) }} className="child-item-box" key={child.code}>
                   <p
                     className={clsname}>
                     {child.name}
@@ -55,7 +57,6 @@ function renderCategoryOrderItems(items, props) {
 function renderCategoryFilter(items, props) {
   let [chrooseData, setChroose] = filterChrState;
   let chroose = chrooseData.items || [];
-
   let putOn = (child, item) => {
     let chr = [];
     if (item.support_multi_choice > 0 && chrooseData.group === item.group_title) {
@@ -177,11 +178,10 @@ const Header = props => {
           {renderHeaders(props)}
         </div>
       </div>
-
       {
-        activeKey && 
-        <div className="category-layer">
-          <div className="category-scroll">
+        activeKey &&
+        <div className="category-layer" id='type-layer' >
+          <div className="category-scroll" onClick={e => { layerClick(e, props) }}>
             <div className='category-list-content' >
               {chrooseCategory(props)}
             </div>
@@ -190,6 +190,12 @@ const Header = props => {
       }
     </Fragment>
   )
+}
+
+function layerClick(event, props) {
+  if (event.currentTarget == event.target) {
+    props.itmClick('')
+  }
 }
 
 const mapStateToProps = state => {

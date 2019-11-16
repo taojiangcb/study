@@ -15,7 +15,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const production = merge(baseConf, {
   entry: {
     app: path.resolve(__dirname, '../src/page/index/index.jsx'),
-    category: path.resolve(__dirname, '../src/page/category/category.jsx'),
+    category: path.resolve(__dirname, '../src/page/category/Index.jsx'),
     // 将 第三方依赖 单独打包
     vendor: [
       'react',

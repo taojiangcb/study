@@ -35,5 +35,14 @@ class Content extends React.Component {
     return <Main />
   }
 }
-export const HotContent = hot(module)(Content);
+
+let expObj;
+if(__DEV__) {
+  expObj = hot(module)(Content);
+}
+else {
+  expObj = Content;
+}
+
+export const HotContent = expObj
 

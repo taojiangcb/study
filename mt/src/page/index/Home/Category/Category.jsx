@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { featch_category } from '../../reducers/action.category';
 import './Category.scss'
 import { InitData } from '../../../../controller/initData';
+import { withRouter } from 'react-router-dom'
 
 const initItemsData = (props) => {
   let [isInit, setInit] = useState(false);
@@ -14,12 +15,18 @@ const initItemsData = (props) => {
   }, [isInit]);
 }
 
-const itemRenderes = (items) => (
+
+const categoryClick = (e, props) => {
+  //props.history.push(`/category.html`);
+  window.location.href = "/category.html";
+}
+
+const itemRenderes = (items, props) => (
   <Fragment>
     {
       items && items.map((item, i) => {
         return (
-          <div key={item.code} className="category-item">
+          <div onClick={e => { categoryClick(e, props) }} key={item.code} className="category-item">
             <img className='item-icon' src={item.url} />
             <p className='item-name'>{item.name}</p>
           </div>
@@ -30,17 +37,17 @@ const itemRenderes = (items) => (
 )
 
 const Category = (props) => {
-  // initItemsData(props);
   InitData(props.featchData)
   let { items } = props;
   let icons = items.slice(0, 8);
 
   return (
     <div className="category-content">
-      {itemRenderes(icons)}
+      {itemRenderes(icons, props)}
     </div>
   )
 }
+
 const mapStateToProps = (state) => {
   return {
     items: state.categoryReducer.items
@@ -55,6 +62,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Category)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Category))
 
 

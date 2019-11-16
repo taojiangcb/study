@@ -21,6 +21,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-runtime": "^6.23.0",
     "copy-webpack-plugin": "^5.0.5",
+    "cross-env": "^6.0.3",
     "css-loader": "2.0.2",
     "eslint": "4.0.0",
     "eslint-loader": "2.0.0",
@@ -62,6 +63,8 @@
     "yargs-parser": "^16.1.0"
   },
   "dependencies": {
+    "http-server": "^0.11.1",
+    "live-server": "1.2.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-redux": "^7.1.1",
@@ -71,8 +74,8 @@
   "scripts": {
     "dev": "webpack-dev-server --mode development --config ./config/webpack.config.dev.js",
     "build:dev": "rm -fr ./build && webpack --mode development --config ./config/webpack.config.build.dev.js",
-    "build:prd": "rm -fr ./dist && webpack --mode production --config ./config/webpack.config.production.js",
-    "mock": "node --harmony ./mock/server.js"
+    "build:prd": "rm -fr ./dist && NODE_ENV='production' webpack --mode production --config ./config/webpack.config.production.js",
+    "dev:rn": "NODE_ENV='production' http-server ./dist"
   },
   "author": "tao",
   "license": "ISC"

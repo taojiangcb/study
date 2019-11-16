@@ -25,7 +25,6 @@ class ScrollView extends Component {
 
     if ((scrollTop + clientHeight) >= (scrollHeight - proLoadDis)) {
       if (page < 3) {
-        console.log('...onPageLoader ....');
         this.setState({
           ...this.state,
           page: this.state.page + 1

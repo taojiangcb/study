@@ -2,10 +2,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './NavHeader.scss';
+
+const backClick = (e) => {
+  window.location.href = "/";
+}
+
 const NavHeander = props => {
   return (
     <div className='nav-header scale-1px'>
-      <div className='nav-back-icon'></div>
+      <div className='nav-back-icon' onClick={backClick}></div>
       <div className="nav-title">分类</div>
     </div>
   )
